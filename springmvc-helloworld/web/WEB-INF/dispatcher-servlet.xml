@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 注解定义方式 -->
+    <context:component-scan base-package="ctrl"/>
+
+    <!-- xml定义方式  同时存在会冲突  冲突时以xml定义为准 -->
+    <!--<bean id="simpleUrlHandlerMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">-->
+        <!--<property name="mappings">-->
+            <!--<props>-->
+                <!--&lt;!&ndash; 将/hello开始的路径交给helloCtrl控制器处理&ndash;&gt;-->
+                <!--<prop key="/hello">helloCtrl</prop>-->
+            <!--</props>-->
+
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!--<bean id="helloCtrl" class="ctrl.HelloCtrl"></bean>-->
+
+
+    <!-- 防止用户直接访问jsp而带来的错误 -->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/page/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+
+    <!-- 文件上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    </bean>
+</beans>
