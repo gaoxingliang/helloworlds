@@ -17,4 +17,4 @@ insert into banks values(1, 100);
 ```
 
 # 注意
-第二次运行可能会失败, 因为`private String sql_1 = "insert into orders values(17, 77)";`这里有一个主键限制. 改一下就可以知道了.
+第二次运行可能会失败, 因为[DistributeTransaction](src/main/java/DistributeTransaction.java)中`private String sql_1 = "insert into orders values(17, 77)";`这里有一个主键限制. 改一下就可以知道了.
