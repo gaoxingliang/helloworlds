@@ -14,12 +14,20 @@ docker rmi imageID  --- delete some images
 docker inspect imageName   
         Example:  docker inspect centos
         
-export/save an image:
+
 docker save -o broker_dev.tar broker:dev
 
-import an image
-docker import rasa.tar rasa:latest
+docker load rasa.tar rasa:latest
+
 ```
+
+**docker save** and **docker load** will preserve image metadata (CMD, ENTRYPOINT, etc) and all layers.
+
+**docker export** and **docker import** don't preserve metadata. This is by design and it's not being changed.
+
+docker import will be extended with a --change option to allow CMD, ENTRYPOINT, ENV and many other options to be set.
+
+
 
 ```
 recreate a image base on existed image
