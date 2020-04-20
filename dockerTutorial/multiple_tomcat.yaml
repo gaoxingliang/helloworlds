@@ -1,0 +1,23 @@
+
+apiVersion: v1
+kind: ReplicationController 
+metadata:
+   name: tomcat-replicationcontroller 
+spec:
+   replicas: 2
+   template:
+      metadata:
+         name: tomcat-replicationcontroller
+         labels:
+           app: App
+           component: neo4j
+      spec:
+         containers:
+         - 
+           name: tomcat
+           image: tomcat
+           ports:
+             - 
+               # tomcat expose this port using docker inspect to get 
+               containerPort: 8080
+
