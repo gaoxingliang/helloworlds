@@ -58,19 +58,23 @@ public class MyInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        System.out.println("do MyInterceptor posthandler" + request);
-        long elapse = System.nanoTime() - (long)request.getAttribute("$StartNanoTime");
-        HandlerMethod m = (HandlerMethod) handler;
-        String callName = m.getShortLogMessage();
-        Stat s = method2Stat.computeIfAbsent(callName, k -> new Stat());
-        s.callCount.incrementAndGet();
-        s.totalTimeInNanoSeconds.addAndGet(elapse);
+        if (handler instanceof HandlerMethod) {
+            System.out.println("do MyInterceptor posthandler" + request);
+            long elapse = System.nanoTime() - (long)request.getAttribute("$StartNanoTime");
+            HandlerMethod m = (HandlerMethod) handler;
+            String callName = m.getShortLogMessage();
+            Stat s = method2Stat.computeIfAbsent(callName, k -> new Stat());
+            s.callCount.incrementAndGet();
+            s.totalTimeInNanoSeconds.addAndGet(elapse);
+        }
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        System.out.println("do MyInterceptor aftercompletion " + request);
-        request.removeAttribute("$StartNanoTime");
+        if (handler instanceof HandlerMethod) {
+            System.out.println("do MyInterceptor aftercompletion " + request);
+            request.removeAttribute("$StartNanoTime");
+        }
     }
 
 
