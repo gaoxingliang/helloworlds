@@ -19,6 +19,11 @@ public class RestCtrlExample {
         }
     }
 
+    @GetMapping("/api/testException")
+    public void getException() {
+        System.out.println("Test exception enter");
+    }
+
     @GetMapping("/api/get")
     public void getByid(@RequestParam(name="id") int id) {
         System.out.println("Got an get by param  "+ id);
