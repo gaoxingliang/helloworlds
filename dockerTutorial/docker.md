@@ -15,9 +15,15 @@ docker inspect imageName
         Example:  docker inspect centos
         
 
+docker 删除掉none的 images
+docker rmi -f $(docker images | grep none | awk '{print $3}')
+
+
+
+
 docker save -o broker_dev.tar broker:dev
 
-docker load rasa.tar rasa:latest
+docker load --input rasa.tar 
 
 ```
 
@@ -392,7 +398,51 @@ run with this network:
 docker run --network=my_network -it ubuntu /bin/bash
 ```
 
+## networktype
 
+docker have diff types of drivers:
+
+### bridge
+
+default if not set by `--network xxxtype `. used for standalone container communication. 
+
+eg two container can share same bridge network use --network param in docker run.
+
+Using a user-defined network provides a scoped network in which only  containers attached to that network are able to communicate.  implemented by **bridge device** on windows  or **iptables on linux**
+
+[ref](https://docs.docker.com/network/bridge/)
+
+
+
+> ## Enable forwarding from Docker containers to the outside world
+>
+> By default, traffic from containers connected to the default bridge network is **not** forwarded to the outside world. To enable forwarding, you need to change two settings. These are not Docker commands and they affect the Docker host’s kernel.
+>
+> 1. Configure the Linux kernel to allow IP forwarding.
+>
+>    ```
+>    $ sysctl net.ipv4.conf.all.forwarding=1
+>    ```
+>
+> 2. Change the policy for the `iptables` `FORWARD` policy from `DROP` to `ACCEPT`.
+>
+>    ```
+>    $ sudo iptables -P FORWARD ACCEPT
+>    ```
+>
+> These settings do not persist across a reboot, so you may need to add them to a start-up script.
+
+
+
+### host
+
+No network isolation between docker container and host.  share same network space. Then -p are ignored
+
+
+
+### overlay
+
+You can also use overlay networks to facilitate communication between a swarm service and a standalone container, or between two standalone containers on different Docker daemons.
 
 # nodejs
 

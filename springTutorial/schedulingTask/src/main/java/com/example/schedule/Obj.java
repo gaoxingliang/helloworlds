@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+//@Configuration
+//@RestController
+//@Service
 @Component
 public class Obj {
     @Value("${hello.message}")
