@@ -445,7 +445,227 @@ Disadvantages: (1) op across partition is usally not supported
 
 
 
+# redis sentinel
 
+ha for redis.[replica url](https://redis.io/topics/replication)  [sentinel url](https://redis.io/topics/sentinel)
+
+
+
+Capabilities: (1) monitoring (2) notifcations (3) auto failover (4) configuration provider
+
+
+
+## run
+
+```
+redis-sentinel /path/to/sentinel.conf
+or
+redis-server /path/to/sentinel.conf --sentinel
+```
+
+
+
+## things to know
+
+Sentinel + Redis distributed system does **not guarantee** that acknowledged writes are retained during failures, since Redis uses asynchronous  replication. However there are ways to deploy Sentinel that make the  window to lose writes limited to certain moments, while there are other  less secure ways to deploy it.
+
+
+
+## conf exmaple
+
+```
+sentinel monitor mymaster 127.0.0.1 6379 2
+sentinel down-after-milliseconds mymaster 60000
+sentinel failover-timeout mymaster 180000
+sentinel parallel-syncs mymaster 1
+
+sentinel monitor resque 192.168.1.3 6380 4
+sentinel down-after-milliseconds resque 10000
+sentinel failover-timeout resque 180000
+sentinel parallel-syncs resque 5
+```
+
+this file WILL be rewrite auto when master/replica changed.
+
+above conf is a two sets of redis instances. each with a master and unknown nums of replicas
+
+### conf explain
+
+```
+sentinel monitor <master-group-name> <ip> <port> <quorum>
+```
+
+quorum is number of sentinels to agree of master is un-reachable. and it's only for failure detection.
+
+> So for example if you have 5 Sentinel processes, and the quorum for a given            master set to the value of 2, this is what happens:
+>
+> - If two Sentinels agree at the same time about the master being unreachable, one of the two will try to start a failover.
+> - If there are at least a total of three Sentinels reachable, the failover will be authorized and will actually start.
+>
+> In practical terms this means during failures **Sentinel never starts a failover if the majority of Sentinel processes are unable to talk** (aka no failover in the minority partition).
+
+```
+sentinel <option_name> <master_name> <option_value>
+```
+
+And are used for the following purposes:
+
+- `down-after-milliseconds` is the time in milliseconds an instance should not be reachable (either does not reply to our PINGs or it is replying with an error) for a Sentinel starting to think it is down.
+- `parallel-syncs` sets the number of replicas that can be reconfigured to use  the new master after a failover at the same time. The lower the number, the more time it will take for the failover process to complete, however if the            replicas are configured to serve old data, you may not want all the replicas to  re-synchronize with the master at the same time. While the replication  process is mostly non blocking for a replica, there is a moment when it stops to            load the bulk data from the master. 
+
+
+
+## deploy example
+
+M:  master xxx of redis
+
+R: replicas xxxx of redis
+
+S: sentinel XXX
+
+C: clinets xxxx
+
+### case 1 two sentinels
+
+*NOT TRY ON production*
+
+![image-20200519144259279](image-20200519144259279.png)
+
+### case 2: three sentinels
+
+![image-20200519101820290](image-20200519101820290.png)
+
+To avoid data loss when eg: M1 down for C1:
+
+![image-20200519144508654](image-20200519144508654.png)
+
+> ​	In this case a network partition isolated the old master M1, so the  replica R2 is promoted to master. However clients, like C1, that are  in the same partition as the old master, may continue to write data to the old master. This data will be lost forever since when the partition will heal, the master will be **reconfigured as a replica of the new master**, discarding its data set.
+>
+> This problem can be mitigated 减轻 using the following Redis replication feature, that allows to stop accepting writes if a master detects that it is no longer able to transfer its writes to the specified number of replicas.
+>
+> ```
+> min-replicas-to-write 1
+> min-replicas-max-lag 10
+> ```
+>
+> With the above configuration (please see the self-commented `redis.conf` example in the Redis distribution for more information) a Redis  instance, when acting as a master, will stop accepting writes if it  can't write to at least 1 replica. Since replication is asynchronous *not being able to write* actually means that the replica is either disconnected, or is not  sending us asynchronous acknowledges for more than the specified `max-lag` number of seconds.
+>
+> Using this configuration, the old Redis master M1 in the  above example, will become unavailable after 10 seconds. When the  partition heals, the Sentinel configuration will converge to the new  one, the client C1 will be able to fetch a valid configuration and will  continue with the new master.
+>
+> However there is no free lunch. With this refinement, if the two replicas are            down, the master will stop accepting writes. It's a trade off.
+
+### case3  master-slave
+
+![image-20200519150116684](image-20200519150116684.png)
+
+
+
+
+
+My env redis servers:`starts with ./redis-server /path/to/redis.conf`
+
+```
+# 其他配置默认
+node1:
+bind 127.0.0.1
+port 6379
+
+node2:
+bind 127.0.0.1
+port 6380
+replicaof 127.0.0.1 6379
+
+node3:
+bind 127.0.0.1
+port 6381
+replicaof 127.0.0.1 6379
+
+```
+
+sentinel conf:
+
+```
+node1:
+port 26379
+daemonize no
+sentinel monitor mymaster 127.0.0.1 6379 2
+sentinel down-after-milliseconds mymaster 60000
+sentinel failover-timeout mymaster 180000
+sentinel parallel-syncs mymaster 1
+
+
+node2:
+port 26380
+daemonize no
+sentinel monitor mymaster 127.0.0.1 6379 2
+sentinel down-after-milliseconds mymaster 60000
+sentinel failover-timeout mymaster 180000
+sentinel parallel-syncs mymaster 1
+
+node3:
+port 26380
+daemonize no
+sentinel monitor mymaster 127.0.0.1 6379 2
+sentinel down-after-milliseconds mymaster 60000
+sentinel failover-timeout mymaster 180000
+sentinel parallel-syncs mymaster 1
+
+
+```
+
+```
+
+
+```
+
+```
+
+
+```
+
+
+
+## verify
+
+```
+redis-cli -p 26381
+sentinel master mymaster
+
+it will show:
+33) "num-other-sentinels"
+34) "2"
+35) "quorum"
+36) "2"
+
+```
+
+1. two window, one for master, one for slave.  test set key worked.  (you can only write on master.  Read on both. has a conf.)
+
+2. stop master, and now new leader is selected.  newkey is writable on new master and synced.
+3. restart previous master, new data is synced.
+
+you can use `role` command to see WHOAMI in replication env.
+
+```
+127.0.0.1:6380> role
+1) "master"
+2) (integer) 121009
+3) 1) 1) "127.0.0.1"
+      2) "6381"
+      3) "121009"
+   2) 1) "127.0.0.1"
+      2) "6379"
+      3) "121009"
+      
+127.0.0.1:6379> role
+1) "slave"
+2) "127.0.0.1"
+3) (integer) 6380
+4) "connected"
+5) (integer) 115913  
+```
+
+local dir is `/Users/edward/Documents/installers/redis-node1 ... redis-node2  redis-node3`
 
 # references
 
