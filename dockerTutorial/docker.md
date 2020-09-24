@@ -14,26 +14,12 @@ docker rmi imageID  --- delete some images
 docker inspect imageName   
         Example:  docker inspect centos
         
-
-docker 删除掉none的 images
-docker rmi -f $(docker images | grep none | awk '{print $3}')
-
-
-
-
+export/save an image:
 docker save -o broker_dev.tar broker:dev
 
-docker load --input rasa.tar 
-
+import an image
+docker import rasa.tar rasa:latest
 ```
-
-**docker save** and **docker load** will preserve image metadata (CMD, ENTRYPOINT, etc) and all layers.
-
-**docker export** and **docker import** don't preserve metadata. This is by design and it's not being changed.
-
-docker import will be extended with a --change option to allow CMD, ENTRYPOINT, ENV and many other options to be set.
-
-
 
 ```
 recreate a image base on existed image
@@ -158,7 +144,7 @@ docker run -p 33060:3306 mysql
 access outside with port 33060
 
 run with environments 
-docker run -e "MYSQL_ROOT_PASSWORD=changeit" -p 33060:3306 mysql
+docker run --restart always -d --name kbmysql -v /root/kbdata/mysql:/var/lib/mysql -e "MYSQL_ROOT_PASSWORD=changeit" -p 33060:3306 mysql:5.7
 
 ```
 
@@ -177,8 +163,10 @@ You might have the need to have your own private repositories. You may not want 
 Step 1: download the private docker registry 
 
 ```
-docker run -d -p 5000:5000 --name registryanothername registry 
+docker run -d -p 5000:5000 -v /data/localreg:/var/lib/registry:rw --name registry registry 
 // --name give another name to diff
+
+docker run --restart always -d -p 5000:5000 -v /root/kbdata/registry:/var/lib/registry:rw --name kbregistry registry 
 ```
 
 Step 2: retag
@@ -398,51 +386,7 @@ run with this network:
 docker run --network=my_network -it ubuntu /bin/bash
 ```
 
-## networktype
 
-docker have diff types of drivers:
-
-### bridge
-
-default if not set by `--network xxxtype `. used for standalone container communication. 
-
-eg two container can share same bridge network use --network param in docker run.
-
-Using a user-defined network provides a scoped network in which only  containers attached to that network are able to communicate.  implemented by **bridge device** on windows  or **iptables on linux**
-
-[ref](https://docs.docker.com/network/bridge/)
-
-
-
-> ## Enable forwarding from Docker containers to the outside world
->
-> By default, traffic from containers connected to the default bridge network is **not** forwarded to the outside world. To enable forwarding, you need to change two settings. These are not Docker commands and they affect the Docker host’s kernel.
->
-> 1. Configure the Linux kernel to allow IP forwarding.
->
->    ```
->    $ sysctl net.ipv4.conf.all.forwarding=1
->    ```
->
-> 2. Change the policy for the `iptables` `FORWARD` policy from `DROP` to `ACCEPT`.
->
->    ```
->    $ sudo iptables -P FORWARD ACCEPT
->    ```
->
-> These settings do not persist across a reboot, so you may need to add them to a start-up script.
-
-
-
-### host
-
-No network isolation between docker container and host.  share same network space. Then -p are ignored
-
-
-
-### overlay
-
-You can also use overlay networks to facilitate communication between a swarm service and a standalone container, or between two standalone containers on different Docker daemons.
 
 # nodejs
 
@@ -538,82 +482,4 @@ docker-compose -f docker-compose.myfirstapp.yml up -d
 - **kube-scheduler** − This is used to schedule the containers on hosts.
 - **Kubelet** − This is used to control the launching of containers via **manifest files**.
 - **kube-proxy** − This is used to provide network proxy services to the outside world.
-
-
-
-# Monitoring related
-
-build all with : spring boot + prometheus +grafana + docker
-
-Ref url : [here](https://medium.com/aeturnuminc/configure-prometheus-and-grafana-in-dockers-ff2a2b51aa1d)
-
-
-
-## Prometheus
-
-Promql example [here](https://timber.io/blog/promql-for-humans/)
-
-an example query:  avg response time of api:
-
-```sql
-1000 * rate(http_server_requests_seconds_sum{uri="/api/manage/sessions"}[1m])/rate(http_server_requests_seconds_count{uri="/api/manage/sessions"}[1m])
-```
-
-my exmaple prom.yml:
-
-```yml
-# my global config
-global:
-  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
-  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
-  # scrape_timeout is set to the global default (10s).
-
-# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
-rule_files:
-# - "first_rules.yml"
-# - "second_rules.yml"
-
-# A scrape configuration containing exactly one endpoint to scrape:
-# Here it's Prometheus itself.
-scrape_configs:
-  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  - job_name: 'prometheus'
-    # metrics_path defaults to '/metrics'
-    # scheme defaults to 'http'.
-    static_configs:
-      - targets: ['127.0.0.1:9090']
-
-  - job_name: 'spring-actuator'
-    metrics_path: '/actuator/prometheus'
-    scrape_interval: 5s
-    static_configs:
-      #  my backend ip. ... run this with network host
-      - targets: ['kubernetes.docker.internal:8000']
-```
-
-run it:
-
-```shell
-docker run -d --name prometheus -p 9090:9090 -v /Users/edward/projects/kb/prom.yml:/etc/prometheus/prometheus.yml prom/prometheus --config.file=/etc/prometheus/prometheus.yml
-```
-
-
-
-
-
-
-
-## grafana
-
-```sh
-docker run -d --name grafana -p 3000:3000 grafana/grafana
-```
-
-then access with http://localhost:3000  and admin/admin.
-
-
-
-
-
-
 
