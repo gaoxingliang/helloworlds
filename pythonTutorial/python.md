@@ -153,6 +153,11 @@ for v in x:
 for i in range(len(x)):
 	print(x[i])
 
+  
+ xx = [1, 3, 5, 7]
+yy = [x*2 for x in xx]
+print(yy) 
+  
 ```
 
 
@@ -198,11 +203,32 @@ https://www.tutorialspoint.com/python/python_strings.htm
 
 ## time
 
-```python
+![image-20200925110210978](image-20200925110210978.png)
+
+
 
 ```
+# time to string
+strtime = time.asctime(time.localtime(time.time()))
+print(strtime)
+Fri Sep 25 10:56:20 2020
+# all formats: https://www.tutorialspoint.com/python/time_strftime.htm
+# long to time
+# Fri Sep 25 10:52:44 2020  本地时区
+t = time.localtime(1601002364)
+print(time.asctime(t))
+# long to string
+print(time.strftime("%Y %m %d %H:%M:%S", t))
 
 
+# string to long
+print(time.strptime("2020 09 25 10:52:44", "%Y %m %d %H:%M:%S"))
+
+
+Fri Sep 25 10:52:44 2020
+2020 09 25 10:52:44
+time.struct_time(tm_year=2020, tm_mon=9, tm_mday=25, tm_hour=10, tm_min=52, tm_sec=44, tm_wday=4, tm_yday=269, tm_isdst=-1)
+```
 
 
 
@@ -234,9 +260,217 @@ sum = lambda arg1, arg2: arg1 + arg2;
 # Now you can call sum as a function
 print "Value of total : ", sum( 10, 20 )
 print "Value of total : ", sum( 20, 20 )
+
+
+# 匿名函数
+lamda a,b: a+b
 ```
 
 
+
+## modules
+
+```python
+from time import xxx
+import time
+from time import *
+
+
+import sys
+print(sys.path)
+
+
+import numpy
+print(numpy.__version__)
+```
+
+
+
+## IO
+
+```python
+read from input:
+str = raw_input("input sth")
+
+
+testfile = open("test", "w+")
+testfile.write("okay\n")
+testfile.write("anotherline")
+testfile.close()
+
+
+r = open("test", "r")
+x = r.read(50) # 50bytes
+print(x)
+r.close()
+
+okay
+anotherline
+
+```
+
+```python
+# 按行读取
+f = open("foo.txt")             # 返回一个文件对象  
+line = f.readline()             # 调用文件的 readline()方法  
+while line:  
+    print line,                 # 后面跟 ',' 将忽略换行符  
+    # print(line, end = '')　　　# 在 Python 3中使用  
+    line = f.readline()  
+ 
+f.close()  
+方法二：
+ 
+for line in open("foo.txt"):  
+    print line,  
+方法三：
+ 
+f = open("c:\\1.txt","r")  
+lines = f.readlines()#读取全部内容  
+for line in lines  
+    print line  
+ 
+```
+
+
+
+````python
+os.rename(file1, file2)
+
+os.remove(file1)
+
+os.mkdir("testdir")
+
+os.getcwd()
+
+os.listdir()
+
+import os
+os.listdir(os.getcwd())
+````
+
+
+
+## exception
+
+```python
+import traceback
+try:
+    print("start cal")
+    x = 1/0
+    print("finish cal ok")
+# except (RuntimeError, TypeError, NameError):    
+except Exception as e:
+    print("Error divide {0}".format(e) )
+    traceback.print_exc()
+    #traceback.print_exception(e)
+finally:
+    print("final part")
+```
+
+
+
+```python
+def f(x):
+    raise NameError(x)
+
+f(123)   
+```
+
+
+
+
+
+```python
+class Error(Exception):
+    """Base class for exceptions in this module."""
+    pass
+
+class InputError(Error):
+    """Exception raised for errors in the input.
+
+    Attributes:
+        expression -- input expression in which the error occurred
+        message -- explanation of the error
+    """
+
+    def __init__(self, expression, message):
+        self.expression = expression
+        self.message = message
+
+class TransitionError(Error):
+    """Raised when an operation attempts a state transition that's not
+    allowed.
+
+    Attributes:
+        previous -- state at beginning of transition
+        next -- attempted new state
+        message -- explanation of why the specific transition is not allowed
+    """
+
+    def __init__(self, previous, next, message):
+        self.previous = previous
+        self.next = next
+        self.message = message
+
+
+```
+
+
+
+```python
+with open("myfile.txt") as f:
+    for line in f:
+        print(line, end="")
+```
+
+
+
+
+
+# Class
+
+```python
+class Fruit:
+    count = 0
+    def __init__(self, name):
+        self.name = name
+    def getDisplay():
+        return name + "me"
+      
+class SubClassName (ParentClass1[, ParentClass2, ...]):
+   'Optional class documentation string'
+   class_suite      
+```
+
+
+
+- The **getattr(obj, name[, default])** − to access the attribute of object.
+- The **hasattr(obj,name)** − to check if an attribute exists or not.
+- The **setattr(obj,name,value)** − to set an attribute. If attribute does not exist, then it would be created.
+- The **delattr(obj, name)** − to delete an attribute.
+
+![image-20200925145938411](image-20200925145938411.png)
+
+
+
+# reg
+
+```python
+#!/usr/bin/python
+import re
+
+line = "Cats are smarter than dogs"
+
+matchObj = re.match( r'(.*) are (.*?) .*', line, re.M|re.I)
+
+if matchObj:
+   print("matchObj.group() : ", matchObj.group())
+   print("matchObj.group(1) : ", matchObj.group(1))
+   print("matchObj.group(2) : ", matchObj.group(2))
+else:
+   print("No match!!")
+```
 
 
 
@@ -250,4 +484,6 @@ export requirements:
 pip freeze > requirements.txt
 pip install -r requirements.txt
 ```
+
+
 
