@@ -35,6 +35,7 @@ elif xxxx:
 	qqq
 else:
 	qqq
+	
 ```
 
 
@@ -168,7 +169,7 @@ print(yy)
 abs
 log
 max(1, 2)
-int
+int("123") str(xxx)
 ```
 
 
@@ -241,6 +242,8 @@ def printme( str ):
    print str
    return;
   
+ 
+  
 def printinfo( arg1, *vartuple ):
    "This prints a variable passed arguments"
    print "Output is: "
@@ -264,7 +267,49 @@ print "Value of total : ", sum( 20, 20 )
 
 # 匿名函数
 lamda a,b: a+b
+  
 ```
+
+
+
+
+
+## decorators
+
+```python
+
+def foo(*args):
+	for a in args:
+		print(a)
+		
+foo(1, 2, 3)
+
+def bar(**kwargs):
+	for a in kwargs:
+		print(a, kwargs[a])
+bar(name="hello", age=27)
+
+```
+
+
+
+```python
+def do_twice(func):
+    def wrapper_do_twice(*args, **kwargs):
+        func(*args, **kwargs)
+        func(*args, **kwargs)
+    return wrapper_do_twice
+
+@do_twice  
+def hello(name):
+  print("hello ", name)
+  
+    
+```
+
+ref:
+
+https://realpython.com/primer-on-python-decorators/
 
 
 
@@ -282,6 +327,8 @@ print(sys.path)
 
 import numpy
 print(numpy.__version__)
+
+dir(numpy)
 ```
 
 
@@ -329,7 +376,7 @@ f = open("c:\\1.txt","r")
 lines = f.readlines()#读取全部内容  
 for line in lines  
     print line  
- 
+
 ```
 
 
@@ -440,7 +487,10 @@ class Fruit:
       
 class SubClassName (ParentClass1[, ParentClass2, ...]):
    'Optional class documentation string'
-   class_suite      
+   class_suite   
+  
+  
+ 
 ```
 
 
@@ -482,7 +532,7 @@ export requirements:
 
 ```py
 pip freeze > requirements.txt
-pip install -r requirements.txt
+pip install -i https://pypi.douban.com/simple/ -r requirements.txt
 ```
 
 
