@@ -7,7 +7,8 @@
 
 ## 概念
 1. Aspect<br>
-    作为某个关注点、横切面在许多类的模块化集合。比如事务管理`@Transactional`就是在企业应用中事务相关的的横切面。
+    作为某个关注点、横切面在许多类的模块化集合。比如事务管理`@Transactional`就是在企业应用中事务相关的的横切面。或者某个用来记录日志的切面。一般情况下切面会包含一个完整
+   的有意义的集合。一般会包含Pointcut定义和Advice定义。
 2. Join Point <br>
     代表某个程序执行的点。在spring中代表某个方法的执行点。
 3. Advice <br>
@@ -30,8 +31,8 @@
 2. AfterReturning <br>
 3. AfterThrowing <br>
 4. Around <br>
-    around advice会有一个JointPoint参数可以用来获取当前执行方法的相关信息。这是最强的一类advice。它提供`proceed`方法来
-   调用原有逻辑。
+    around advice会有一个ProceedingJoinPoint参数.这是最强的一类advice。它提供`proceed`方法来
+   调用原有逻辑。其他的几个Advie都是类似于只读型的， 只提供了一个JoinPoint类型的参数。
    
 
 ## PointCut常用示例
@@ -88,7 +89,7 @@ throws-pattern?)
    ```   
 
 4. Arround
-环绕通知可以使用`ProceedingJoinPoint` 获取当前执行方法的信息。
+环绕通知可以使用`ProceedingJoinPoint.proceed` 来调用原始的实现。
 ```java
    @Around("com.xyz.myapp.CommonPointcuts.businessService()")
    public Object timing(ProceedingJoinPoint jp) throws Throwable {
