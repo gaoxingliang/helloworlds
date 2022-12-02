@@ -1,6 +1,9 @@
 # Spring Aspect cheatsheet
 放一些简单易用的spring aspect 语法手册。<br>
-引入库， 参考[build.gradle](./build.gradle)
+
+# 使用
+1. 引入库， 参考[build.gradle](./build.gradle)
+2. 使用`@Aspect`和`@Configuration`来标记Aspect。参考[LogingAspect](./src/main/java/com/example/springaop/LogingAspect.java)
 
 # Why？
 就像之前写的btrace手册一样， 为了方便查找和实际操作，想分享一些关于写Aspect相关的cheatsheet。
