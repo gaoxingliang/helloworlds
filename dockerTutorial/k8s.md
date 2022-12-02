@@ -25,6 +25,40 @@ Refs:
 
 
 
+# install on macos
+
+Url:
+
+https://github.com/gotok8s/k8s-docker-desktop-for-mac
+
+use below conf for v1.18.8 `images`
+
+```
+k8s.gcr.io/kube-proxy:v1.18.8=gotok8s/kube-proxy:v1.18.8
+k8s.gcr.io/kube-controller-manager:v1.18.8=gotok8s/kube-controller-manager:v1.18.8
+k8s.gcr.io/kube-scheduler:v1.18.8=gotok8s/kube-scheduler:v1.18.8
+k8s.gcr.io/kube-apiserver:v1.18.8=gotok8s/kube-apiserver:v1.18.8
+k8s.gcr.io/coredns:1.6.7=gotok8s/coredns:1.6.7
+k8s.gcr.io/pause:3.2=gotok8s/pause:3.2
+k8s.gcr.io/etcd:3.4.3-0=gotok8s/etcd:3.4.3-0
+```
+
+
+
+# set default context:
+
+```
+kubectl config use-context docker-desktop
+
+# set default namespace..
+
+kubectl config set-context --current --namespace=zervice
+```
+
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+
+
+
 # cluster arch
 
 ![image-20200412211850096](image-20200412211850096.png)
@@ -579,4 +613,14 @@ see- https://github.com/kubernetes/kubernetes/issues/58692
 # dashboard
 
 ref guide: https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
+
+
+
+# helm
+
+install
+
+```
+helm install 
+```
 
