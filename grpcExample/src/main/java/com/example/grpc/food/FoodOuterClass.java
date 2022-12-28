@@ -20,25 +20,32 @@ public final class FoodOuterClass {
 
     /**
      * <code>repeated string foods = 1;</code>
+     * @return A list containing the foods.
      */
     java.util.List<java.lang.String>
         getFoodsList();
     /**
      * <code>repeated string foods = 1;</code>
+     * @return The count of foods.
      */
     int getFoodsCount();
     /**
      * <code>repeated string foods = 1;</code>
+     * @param index The index of the element to return.
+     * @return The foods at the given index.
      */
     java.lang.String getFoods(int index);
     /**
      * <code>repeated string foods = 1;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the foods at the given index.
      */
     com.google.protobuf.ByteString
         getFoodsBytes(int index);
 
     /**
      * <code>int32 responseCode = 2;</code>
+     * @return The responseCode.
      */
     int getResponseCode();
   }
@@ -56,7 +63,13 @@ public final class FoodOuterClass {
     }
     private FoodResponse() {
       foods_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      responseCode_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new FoodResponse();
     }
 
     @java.lang.Override
@@ -85,7 +98,7 @@ public final class FoodOuterClass {
               break;
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
-              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 foods_ = new com.google.protobuf.LazyStringArrayList();
                 mutable_bitField0_ |= 0x00000001;
               }
@@ -98,7 +111,7 @@ public final class FoodOuterClass {
               break;
             }
             default: {
-              if (!parseUnknownFieldProto3(
+              if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
@@ -112,7 +125,7 @@ public final class FoodOuterClass {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
           foods_ = foods_.getUnmodifiableView();
         }
         this.unknownFields = unknownFields.build();
@@ -132,11 +145,11 @@ public final class FoodOuterClass {
               com.example.grpc.food.FoodOuterClass.FoodResponse.class, com.example.grpc.food.FoodOuterClass.FoodResponse.Builder.class);
     }
 
-    private int bitField0_;
     public static final int FOODS_FIELD_NUMBER = 1;
     private com.google.protobuf.LazyStringList foods_;
     /**
      * <code>repeated string foods = 1;</code>
+     * @return A list containing the foods.
      */
     public com.google.protobuf.ProtocolStringList
         getFoodsList() {
@@ -144,18 +157,23 @@ public final class FoodOuterClass {
     }
     /**
      * <code>repeated string foods = 1;</code>
+     * @return The count of foods.
      */
     public int getFoodsCount() {
       return foods_.size();
     }
     /**
      * <code>repeated string foods = 1;</code>
+     * @param index The index of the element to return.
+     * @return The foods at the given index.
      */
     public java.lang.String getFoods(int index) {
       return foods_.get(index);
     }
     /**
      * <code>repeated string foods = 1;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the foods at the given index.
      */
     public com.google.protobuf.ByteString
         getFoodsBytes(int index) {
@@ -166,6 +184,7 @@ public final class FoodOuterClass {
     private int responseCode_;
     /**
      * <code>int32 responseCode = 2;</code>
+     * @return The responseCode.
      */
     public int getResponseCode() {
       return responseCode_;
@@ -227,13 +246,12 @@ public final class FoodOuterClass {
       }
       com.example.grpc.food.FoodOuterClass.FoodResponse other = (com.example.grpc.food.FoodOuterClass.FoodResponse) obj;
 
-      boolean result = true;
-      result = result && getFoodsList()
-          .equals(other.getFoodsList());
-      result = result && (getResponseCode()
-          == other.getResponseCode());
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
+      if (!getFoodsList()
+          .equals(other.getFoodsList())) return false;
+      if (getResponseCode()
+          != other.getResponseCode()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -413,49 +431,47 @@ public final class FoodOuterClass {
       public com.example.grpc.food.FoodOuterClass.FoodResponse buildPartial() {
         com.example.grpc.food.FoodOuterClass.FoodResponse result = new com.example.grpc.food.FoodOuterClass.FoodResponse(this);
         int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        if (((bitField0_ & 0x00000001) != 0)) {
           foods_ = foods_.getUnmodifiableView();
           bitField0_ = (bitField0_ & ~0x00000001);
         }
         result.foods_ = foods_;
         result.responseCode_ = responseCode_;
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
 
       @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
       @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return (Builder) super.setField(field, value);
+        return super.setField(field, value);
       }
       @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
       @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
       @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           int index, java.lang.Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+        return super.setRepeatedField(field, index, value);
       }
       @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+        return super.addRepeatedField(field, value);
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
@@ -514,13 +530,14 @@ public final class FoodOuterClass {
 
       private com.google.protobuf.LazyStringList foods_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       private void ensureFoodsIsMutable() {
-        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+        if (!((bitField0_ & 0x00000001) != 0)) {
           foods_ = new com.google.protobuf.LazyStringArrayList(foods_);
           bitField0_ |= 0x00000001;
          }
       }
       /**
        * <code>repeated string foods = 1;</code>
+       * @return A list containing the foods.
        */
       public com.google.protobuf.ProtocolStringList
           getFoodsList() {
@@ -528,18 +545,23 @@ public final class FoodOuterClass {
       }
       /**
        * <code>repeated string foods = 1;</code>
+       * @return The count of foods.
        */
       public int getFoodsCount() {
         return foods_.size();
       }
       /**
        * <code>repeated string foods = 1;</code>
+       * @param index The index of the element to return.
+       * @return The foods at the given index.
        */
       public java.lang.String getFoods(int index) {
         return foods_.get(index);
       }
       /**
        * <code>repeated string foods = 1;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the foods at the given index.
        */
       public com.google.protobuf.ByteString
           getFoodsBytes(int index) {
@@ -547,6 +569,9 @@ public final class FoodOuterClass {
       }
       /**
        * <code>repeated string foods = 1;</code>
+       * @param index The index to set the value at.
+       * @param value The foods to set.
+       * @return This builder for chaining.
        */
       public Builder setFoods(
           int index, java.lang.String value) {
@@ -560,6 +585,8 @@ public final class FoodOuterClass {
       }
       /**
        * <code>repeated string foods = 1;</code>
+       * @param value The foods to add.
+       * @return This builder for chaining.
        */
       public Builder addFoods(
           java.lang.String value) {
@@ -573,6 +600,8 @@ public final class FoodOuterClass {
       }
       /**
        * <code>repeated string foods = 1;</code>
+       * @param values The foods to add.
+       * @return This builder for chaining.
        */
       public Builder addAllFoods(
           java.lang.Iterable<java.lang.String> values) {
@@ -584,6 +613,7 @@ public final class FoodOuterClass {
       }
       /**
        * <code>repeated string foods = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFoods() {
         foods_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -593,6 +623,8 @@ public final class FoodOuterClass {
       }
       /**
        * <code>repeated string foods = 1;</code>
+       * @param value The bytes of the foods to add.
+       * @return This builder for chaining.
        */
       public Builder addFoodsBytes(
           com.google.protobuf.ByteString value) {
@@ -609,12 +641,15 @@ public final class FoodOuterClass {
       private int responseCode_ ;
       /**
        * <code>int32 responseCode = 2;</code>
+       * @return The responseCode.
        */
       public int getResponseCode() {
         return responseCode_;
       }
       /**
        * <code>int32 responseCode = 2;</code>
+       * @param value The responseCode to set.
+       * @return This builder for chaining.
        */
       public Builder setResponseCode(int value) {
         
@@ -624,6 +659,7 @@ public final class FoodOuterClass {
       }
       /**
        * <code>int32 responseCode = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearResponseCode() {
         
@@ -634,7 +670,7 @@ public final class FoodOuterClass {
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFieldsProto3(unknownFields);
+        return super.setUnknownFields(unknownFields);
       }
 
       @java.lang.Override
@@ -704,19 +740,11 @@ public final class FoodOuterClass {
       "odResponseB\027\n\025com.example.grpc.foodb\006pro" +
       "to3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.example.grpc.common.vo.Vo.getDescriptor(),
-        }, assigner);
+        });
     internal_static_FoodResponse_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_FoodResponse_fieldAccessorTable = new

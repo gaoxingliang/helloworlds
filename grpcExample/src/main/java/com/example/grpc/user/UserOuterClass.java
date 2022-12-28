@@ -20,20 +20,24 @@ public final class UserOuterClass {
 
     /**
      * <code>string username = 1;</code>
+     * @return The username.
      */
     java.lang.String getUsername();
     /**
      * <code>string username = 1;</code>
+     * @return The bytes for username.
      */
     com.google.protobuf.ByteString
         getUsernameBytes();
 
     /**
      * <code>string password = 2;</code>
+     * @return The password.
      */
     java.lang.String getPassword();
     /**
      * <code>string password = 2;</code>
+     * @return The bytes for password.
      */
     com.google.protobuf.ByteString
         getPasswordBytes();
@@ -56,6 +60,13 @@ public final class UserOuterClass {
     }
 
     @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new LoginRequest();
+    }
+
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -68,7 +79,6 @@ public final class UserOuterClass {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -92,7 +102,7 @@ public final class UserOuterClass {
               break;
             }
             default: {
-              if (!parseUnknownFieldProto3(
+              if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
@@ -127,6 +137,7 @@ public final class UserOuterClass {
     private volatile java.lang.Object username_;
     /**
      * <code>string username = 1;</code>
+     * @return The username.
      */
     public java.lang.String getUsername() {
       java.lang.Object ref = username_;
@@ -142,6 +153,7 @@ public final class UserOuterClass {
     }
     /**
      * <code>string username = 1;</code>
+     * @return The bytes for username.
      */
     public com.google.protobuf.ByteString
         getUsernameBytes() {
@@ -161,6 +173,7 @@ public final class UserOuterClass {
     private volatile java.lang.Object password_;
     /**
      * <code>string password = 2;</code>
+     * @return The password.
      */
     public java.lang.String getPassword() {
       java.lang.Object ref = password_;
@@ -176,6 +189,7 @@ public final class UserOuterClass {
     }
     /**
      * <code>string password = 2;</code>
+     * @return The bytes for password.
      */
     public com.google.protobuf.ByteString
         getPasswordBytes() {
@@ -241,13 +255,12 @@ public final class UserOuterClass {
       }
       com.example.grpc.user.UserOuterClass.LoginRequest other = (com.example.grpc.user.UserOuterClass.LoginRequest) obj;
 
-      boolean result = true;
-      result = result && getUsername()
-          .equals(other.getUsername());
-      result = result && getPassword()
-          .equals(other.getPassword());
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
+      if (!getUsername()
+          .equals(other.getUsername())) return false;
+      if (!getPassword()
+          .equals(other.getPassword())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -432,35 +445,35 @@ public final class UserOuterClass {
 
       @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
       @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return (Builder) super.setField(field, value);
+        return super.setField(field, value);
       }
       @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
       @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
       @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           int index, java.lang.Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+        return super.setRepeatedField(field, index, value);
       }
       @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+        return super.addRepeatedField(field, value);
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
@@ -514,6 +527,7 @@ public final class UserOuterClass {
       private java.lang.Object username_ = "";
       /**
        * <code>string username = 1;</code>
+       * @return The username.
        */
       public java.lang.String getUsername() {
         java.lang.Object ref = username_;
@@ -529,6 +543,7 @@ public final class UserOuterClass {
       }
       /**
        * <code>string username = 1;</code>
+       * @return The bytes for username.
        */
       public com.google.protobuf.ByteString
           getUsernameBytes() {
@@ -545,6 +560,8 @@ public final class UserOuterClass {
       }
       /**
        * <code>string username = 1;</code>
+       * @param value The username to set.
+       * @return This builder for chaining.
        */
       public Builder setUsername(
           java.lang.String value) {
@@ -558,6 +575,7 @@ public final class UserOuterClass {
       }
       /**
        * <code>string username = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearUsername() {
         
@@ -567,6 +585,8 @@ public final class UserOuterClass {
       }
       /**
        * <code>string username = 1;</code>
+       * @param value The bytes for username to set.
+       * @return This builder for chaining.
        */
       public Builder setUsernameBytes(
           com.google.protobuf.ByteString value) {
@@ -583,6 +603,7 @@ public final class UserOuterClass {
       private java.lang.Object password_ = "";
       /**
        * <code>string password = 2;</code>
+       * @return The password.
        */
       public java.lang.String getPassword() {
         java.lang.Object ref = password_;
@@ -598,6 +619,7 @@ public final class UserOuterClass {
       }
       /**
        * <code>string password = 2;</code>
+       * @return The bytes for password.
        */
       public com.google.protobuf.ByteString
           getPasswordBytes() {
@@ -614,6 +636,8 @@ public final class UserOuterClass {
       }
       /**
        * <code>string password = 2;</code>
+       * @param value The password to set.
+       * @return This builder for chaining.
        */
       public Builder setPassword(
           java.lang.String value) {
@@ -627,6 +651,7 @@ public final class UserOuterClass {
       }
       /**
        * <code>string password = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPassword() {
         
@@ -636,6 +661,8 @@ public final class UserOuterClass {
       }
       /**
        * <code>string password = 2;</code>
+       * @param value The bytes for password to set.
+       * @return This builder for chaining.
        */
       public Builder setPasswordBytes(
           com.google.protobuf.ByteString value) {
@@ -651,7 +678,7 @@ public final class UserOuterClass {
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFieldsProto3(unknownFields);
+        return super.setUnknownFields(unknownFields);
       }
 
       @java.lang.Override
@@ -707,16 +734,19 @@ public final class UserOuterClass {
 
     /**
      * <code>string responsemessage = 1;</code>
+     * @return The responsemessage.
      */
     java.lang.String getResponsemessage();
     /**
      * <code>string responsemessage = 1;</code>
+     * @return The bytes for responsemessage.
      */
     com.google.protobuf.ByteString
         getResponsemessageBytes();
 
     /**
      * <code>int32 responseCode = 2;</code>
+     * @return The responseCode.
      */
     int getResponseCode();
   }
@@ -734,7 +764,13 @@ public final class UserOuterClass {
     }
     private APIResponse() {
       responsemessage_ = "";
-      responseCode_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new APIResponse();
     }
 
     @java.lang.Override
@@ -750,7 +786,6 @@ public final class UserOuterClass {
       if (extensionRegistry == null) {
         throw new java.lang.NullPointerException();
       }
-      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -773,7 +808,7 @@ public final class UserOuterClass {
               break;
             }
             default: {
-              if (!parseUnknownFieldProto3(
+              if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
@@ -808,6 +843,7 @@ public final class UserOuterClass {
     private volatile java.lang.Object responsemessage_;
     /**
      * <code>string responsemessage = 1;</code>
+     * @return The responsemessage.
      */
     public java.lang.String getResponsemessage() {
       java.lang.Object ref = responsemessage_;
@@ -823,6 +859,7 @@ public final class UserOuterClass {
     }
     /**
      * <code>string responsemessage = 1;</code>
+     * @return The bytes for responsemessage.
      */
     public com.google.protobuf.ByteString
         getResponsemessageBytes() {
@@ -842,6 +879,7 @@ public final class UserOuterClass {
     private int responseCode_;
     /**
      * <code>int32 responseCode = 2;</code>
+     * @return The responseCode.
      */
     public int getResponseCode() {
       return responseCode_;
@@ -898,13 +936,12 @@ public final class UserOuterClass {
       }
       com.example.grpc.user.UserOuterClass.APIResponse other = (com.example.grpc.user.UserOuterClass.APIResponse) obj;
 
-      boolean result = true;
-      result = result && getResponsemessage()
-          .equals(other.getResponsemessage());
-      result = result && (getResponseCode()
-          == other.getResponseCode());
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
+      if (!getResponsemessage()
+          .equals(other.getResponsemessage())) return false;
+      if (getResponseCode()
+          != other.getResponseCode()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
     }
 
     @java.lang.Override
@@ -1089,35 +1126,35 @@ public final class UserOuterClass {
 
       @java.lang.Override
       public Builder clone() {
-        return (Builder) super.clone();
+        return super.clone();
       }
       @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return (Builder) super.setField(field, value);
+        return super.setField(field, value);
       }
       @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
+        return super.clearField(field);
       }
       @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
+        return super.clearOneof(oneof);
       }
       @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           int index, java.lang.Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
+        return super.setRepeatedField(field, index, value);
       }
       @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return (Builder) super.addRepeatedField(field, value);
+        return super.addRepeatedField(field, value);
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
@@ -1170,6 +1207,7 @@ public final class UserOuterClass {
       private java.lang.Object responsemessage_ = "";
       /**
        * <code>string responsemessage = 1;</code>
+       * @return The responsemessage.
        */
       public java.lang.String getResponsemessage() {
         java.lang.Object ref = responsemessage_;
@@ -1185,6 +1223,7 @@ public final class UserOuterClass {
       }
       /**
        * <code>string responsemessage = 1;</code>
+       * @return The bytes for responsemessage.
        */
       public com.google.protobuf.ByteString
           getResponsemessageBytes() {
@@ -1201,6 +1240,8 @@ public final class UserOuterClass {
       }
       /**
        * <code>string responsemessage = 1;</code>
+       * @param value The responsemessage to set.
+       * @return This builder for chaining.
        */
       public Builder setResponsemessage(
           java.lang.String value) {
@@ -1214,6 +1255,7 @@ public final class UserOuterClass {
       }
       /**
        * <code>string responsemessage = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearResponsemessage() {
         
@@ -1223,6 +1265,8 @@ public final class UserOuterClass {
       }
       /**
        * <code>string responsemessage = 1;</code>
+       * @param value The bytes for responsemessage to set.
+       * @return This builder for chaining.
        */
       public Builder setResponsemessageBytes(
           com.google.protobuf.ByteString value) {
@@ -1239,12 +1283,15 @@ public final class UserOuterClass {
       private int responseCode_ ;
       /**
        * <code>int32 responseCode = 2;</code>
+       * @return The responseCode.
        */
       public int getResponseCode() {
         return responseCode_;
       }
       /**
        * <code>int32 responseCode = 2;</code>
+       * @param value The responseCode to set.
+       * @return This builder for chaining.
        */
       public Builder setResponseCode(int value) {
         
@@ -1254,6 +1301,7 @@ public final class UserOuterClass {
       }
       /**
        * <code>int32 responseCode = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearResponseCode() {
         
@@ -1264,7 +1312,7 @@ public final class UserOuterClass {
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFieldsProto3(unknownFields);
+        return super.setUnknownFields(unknownFields);
       }
 
       @java.lang.Override
@@ -1341,19 +1389,11 @@ public final class UserOuterClass {
       "\006logout\022\006.Empty\032\014.APIResponseB\027\n\025com.exa" +
       "mple.grpc.userb\006proto3"
     };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
+    descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.example.grpc.common.vo.Vo.getDescriptor(),
-        }, assigner);
+        });
     internal_static_LoginRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_LoginRequest_fieldAccessorTable = new
