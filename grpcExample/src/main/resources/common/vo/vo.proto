@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+option java_package = "com.example.grpc.common.vo";
+
+message Empty{
+}

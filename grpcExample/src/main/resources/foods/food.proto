@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+option java_package = "com.example.grpc.food";
+
+import "common/vo/vo.proto";
+
+service Food {
+  rpc list(Empty)  returns (FoodResponse);
+}
+
+message FoodResponse{
+  repeated string foods = 1;
+  int32  responseCode = 2;
+}
