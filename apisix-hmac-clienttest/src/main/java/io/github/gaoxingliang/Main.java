@@ -1,4 +1,4 @@
-package gaoxingliang.github.com;
+package io.github.gaoxingliang;
 
 import com.google.common.base.*;
 import kong.unirest.*;
