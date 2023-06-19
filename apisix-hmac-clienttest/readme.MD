@@ -4,16 +4,22 @@ apisix code: [hmac-auth.lua](https://github.com/apache/apisix/blob/master/apisix
 the apisix consumer hmac-auth plugin conf test:
 ```json
 {
-    "_meta": {
-    "disable": false
-    },
-    "access_key": "abcd1234",
-    "algorithm": "hmac-sha256",
-    "encode_uri_params": false,
-    "secret_key": "1234abcd",
-    "signed_headers": [
-    "X-Provider-ID", "Content-Type"
-    ],
-    "validate_request_body": false
+  "username": "test_consumer",
+  "plugins": {
+    "hmac-auth": {
+      "_meta": {
+        "disable": false
+      },
+      "access_key": "abcd1234",
+      "algorithm": "hmac-sha256",
+      "encode_uri_params": false,
+      "secret_key": "1234abcd",
+      "signed_headers": [
+        "X-Provider-ID",
+        "Content-Type"
+      ],
+      "validate_request_body": true
+    }
+  }
 }
 ```

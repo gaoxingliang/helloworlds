@@ -41,11 +41,12 @@ public class Main {
 
         String authHeader = String.format("hmac-auth-v1#%s#%s#%s#%s#%s", accessKey, signature, "hmac-sha256", date,
                 Joiner.on(";").join(SignUtil.SIGNED_HEADERS));
-
+        String bodyDigestHeader = Base64.getEncoder().encodeToString(SignUtil.sign(secretKey.getBytes(), body));
 
         String response = Unirest.post("http://devicbc.sichuancredit.cn:88" + uri)
                 .headers(signedHeaders)
                 .header(HttpHeaders.AUTHORIZATION, authHeader)
+                .header(SignUtil.BODY_DIGEST_HEADER, bodyDigestHeader)
                 .body(body)
                 .asString().getBody();
 

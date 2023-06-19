@@ -12,6 +12,8 @@ import java.util.*;
 
 public class SignUtil {
 
+    public static final String BODY_DIGEST_HEADER = "X-HMAC-DIGEST";
+
     public static final List<String> SIGNED_HEADERS;
     static {
         //SIGNED_HEADERS = Arrays.asList("Host", "X-Provider-ID", "User-Agent");
@@ -81,6 +83,6 @@ public class SignUtil {
         SecretKeySpec signingKey = new SecretKeySpec(key, "HmacSHA256");
         Mac mac = Mac.getInstance("HmacSHA256");
         mac.init(signingKey);
-        return mac.doFinal(data.getBytes(StandardCharsets.UTF_8));
+        return mac.doFinal(Optional.ofNullable(data).orElse("").getBytes(StandardCharsets.UTF_8));
     }
 }
