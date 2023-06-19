@@ -15,7 +15,7 @@ public class SignUtil {
     public static final List<String> SIGNED_HEADERS;
     static {
         //SIGNED_HEADERS = Arrays.asList("Host", "X-Provider-ID", "User-Agent");
-        SIGNED_HEADERS = Arrays.asList("X-Provider-ID");
+        SIGNED_HEADERS = Arrays.asList("Content-Type", "X-Provider-ID");
         Collections.sort(SIGNED_HEADERS, String.CASE_INSENSITIVE_ORDER);
     }
 

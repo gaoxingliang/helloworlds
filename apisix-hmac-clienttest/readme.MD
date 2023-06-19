@@ -12,7 +12,7 @@ the apisix consumer hmac-auth plugin conf test:
     "encode_uri_params": false,
     "secret_key": "1234abcd",
     "signed_headers": [
-    "X-Provider-ID"
+    "X-Provider-ID", "Content-Type"
     ],
     "validate_request_body": false
 }

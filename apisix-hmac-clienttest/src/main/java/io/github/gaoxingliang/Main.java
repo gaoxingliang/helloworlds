@@ -18,15 +18,18 @@ public class Main {
         String accessKey = args[0];
         String secretKey = args[1];
 
-        Map<String, String> headers = new HashMap<>();
-        headers.put("X-Provider-ID", "B_181524");
+        Map<String, String> signedHeaders = new HashMap<>();
+
+        signedHeaders.put("X-Provider-ID", "TEST");
+//        signedHeaders.put("X-Provider-ID", "B_181524");
+        signedHeaders.put("Content-Type", "application/json");
         String body = "{\n" +
-                "    \"type\":\"3\",\n" +
-                "    \"service_url\" :\"/csi/riskname/list/search/V4\",\n" +
+                "    \"type\":\"7\",\n" +
+                "    \"service_url\" :\"/EFRS/INFOSERVICE2/companydetails/V3\",\n" +
                 "    \"req_data\" :{\n" +
-                "        \"key\":\"中国工商银行股份有限公司\",\n" +
+                "        \"key\":\"阿里巴巴(中国)有限公司\",\n" +
                 "        \"keyType\":\"32\",\n" +
-                "        \"model\":\"46\"\n" +
+                "        \"model\":\"ENTINFO\"\n" +
                 "    },\n" +
                 "    \"source\":\"3\"\n" +
                 "}";
@@ -34,16 +37,15 @@ public class Main {
         String uri = "/enterprises/customized/modules/rawdata";
         String date = SignUtil.getDate();
 
-        String signature = SignUtil.generateSignature(accessKey, secretKey, "POST", uri, null, headers);
+        String signature = SignUtil.generateSignature(accessKey, secretKey, "POST", uri, null, signedHeaders);
 
         String authHeader = String.format("hmac-auth-v1#%s#%s#%s#%s#%s", accessKey, signature, "hmac-sha256", date,
                 Joiner.on(";").join(SignUtil.SIGNED_HEADERS));
 
 
         String response = Unirest.post("http://devicbc.sichuancredit.cn:88" + uri)
-                .headers(headers)
+                .headers(signedHeaders)
                 .header(HttpHeaders.AUTHORIZATION, authHeader)
-                .header(HttpHeaders.CONTENT_TYPE, "application/json")
                 .body(body)
                 .asString().getBody();
 
