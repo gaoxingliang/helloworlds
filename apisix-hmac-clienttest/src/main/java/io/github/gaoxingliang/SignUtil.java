@@ -28,7 +28,7 @@ public class SignUtil {
     }
 
 
-    public static String generateSignature(String accessKey, String secretKey, String requestMethod, String canonicalUri, Map<String, List<String>> args,
+    public static String generateSignature(String accessKey, String secretKey, String requestMethod, String canonicalUri, Map<String, String> args,
                                              Map<String, String> headers) throws NoSuchAlgorithmException,
             InvalidKeyException {
         String canonicalQueryString = "";
@@ -42,12 +42,9 @@ public class SignUtil {
             Collections.sort(keys);
             List<String> queryTab = new ArrayList<>();
             for (String key : keys) {
-                List<String> values = args.get(key);
-                if (values != null && !values.isEmpty()) {
-                    Collections.sort(values);
-                    for (String value : values) {
-                        queryTab.add(key + "=" + value);
-                    }
+                String value = args.get(key);
+                if (value != null ) {
+                    queryTab.add(key + "=" + value);
                 } else {
                     queryTab.add(key);
                 }
