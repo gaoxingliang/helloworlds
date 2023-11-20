@@ -1,0 +1,10 @@
+{
+  "type":"7",
+  "service_url" :"/EFRS/INFOSERVICE2/companydetails/V3",
+  "req_data" :{
+    "key":"阿里巴巴(中国)有限公司",
+    "keyType":"32",
+    "model":"ENTINFO"
+  },
+  "source":"3"
+}

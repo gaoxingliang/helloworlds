@@ -21,7 +21,6 @@ public class Main {
         Map<String, String> signedHeaders = new HashMap<>();
 
         signedHeaders.put("X-Provider-ID", "TEST");
-//        signedHeaders.put("X-Provider-ID", "B_181524");
         signedHeaders.put("Content-Type", "application/json");
         String body = "{\n" +
                 "    \"type\":\"7\",\n" +

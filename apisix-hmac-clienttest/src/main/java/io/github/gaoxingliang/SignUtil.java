@@ -11,8 +11,13 @@ import java.text.*;
 import java.util.*;
 
 public class SignUtil {
-
+    public static final String RBAC_TOKEN_HEADER = "X-RBAC-TOKEN";
+    public static final String SIGNATURE_HEADER = "X-HMAC-SIGNATURE";
+    public static final String DATE_HEADER = "DATE";
+    public static final String ALGORITHM_HEADER = "X-HMAC-ALGORITHM";
+    public static final String ACCESSKEY_HEADER = "X-HMAC-ACCESS-KEY";
     public static final String BODY_DIGEST_HEADER = "X-HMAC-DIGEST";
+    public static final String SIGNED_HEADERS_HEADER = "X-HMAC-SIGNED-HEADERS";
 
     public static final List<String> SIGNED_HEADERS;
     static {
@@ -22,13 +27,17 @@ public class SignUtil {
     }
 
     public static String getDate() {
+        return getDate(System.currentTimeMillis());
+    }
+
+    public static String getDate(long time) {
         SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-        return sdf.format(new Date());
+        return sdf.format(new Date(time));
     }
 
 
-    public static String generateSignature(String accessKey, String secretKey, String requestMethod, String canonicalUri, Map<String, String> args,
+    public static String generateSignature(String accessKey, String secretKey, String requestMethod, String canonicalUri, Map<String, ?> args,
                                              Map<String, String> headers) throws NoSuchAlgorithmException,
             InvalidKeyException {
         String canonicalQueryString = "";
@@ -42,7 +51,7 @@ public class SignUtil {
             Collections.sort(keys);
             List<String> queryTab = new ArrayList<>();
             for (String key : keys) {
-                String value = args.get(key);
+                Object value = args.get(key);
                 if (value != null ) {
                     queryTab.add(key + "=" + value);
                 } else {
