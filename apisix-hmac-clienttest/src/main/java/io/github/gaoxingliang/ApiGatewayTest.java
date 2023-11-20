@@ -42,11 +42,10 @@ public class ApiGatewayTest {
         // Sm4加密传输数据
         String data = MySmUtil.sm4Encrypt(body, sm4Key);
         // 请求参数map
-        JSONObject encryptParam = new JSONObject();
-        encryptParam.put("encryptKey", encryptKey);
-        encryptParam.put("data", data);
-
-        String requestData = encryptParam.toString();
+        EncryptedData encryptedData = new EncryptedData();
+        encryptedData.setData(data);
+        encryptedData.setEncryptKey(encryptKey);
+        String requestData = JSONObject.toJSONString(encryptedData);
         System.out.println("加密后："  + requestData);
 
         String response = Unirest.post("http://devicbc.sichuancredit.cn:89/rawdata")
@@ -58,16 +57,16 @@ public class ApiGatewayTest {
         System.out.println("收到回复" + response);
 
         // 解密
-        EncryptedData encryptedData = JSONObject.parseObject(response, EncryptedData.class);
-        String sm4Key2 = MySmUtil.sm2Decrypt(encryptedData.getEncryptKey(), privKey);
+        EncryptedData responseEncryptedData = JSONObject.parseObject(response, EncryptedData.class);
+        String sm4Key2 = MySmUtil.sm2Decrypt(responseEncryptedData.getEncryptKey(), privKey);
         // 国密Sm4解密返回的数据
-        String dataStr = MySmUtil.sm4Decrypt(encryptedData.getData(), sm4Key2);
+        String dataStr = MySmUtil.sm4Decrypt(responseEncryptedData.getData(), sm4Key2);
         System.out.println("Sm解密数据为: " + dataStr);
     }
 
 
     public static String getRbacToken(String url, String appid, String u, String p) throws Exception {
-        com.alibaba.fastjson2.JSONObject d = new com.alibaba.fastjson2.JSONObject();
+        JSONObject d = new JSONObject();
         d.put("appid", appid);
         d.put("username", u);
         d.put("password", p);
