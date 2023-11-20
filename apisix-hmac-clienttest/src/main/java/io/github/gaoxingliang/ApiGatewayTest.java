@@ -15,7 +15,7 @@ public class ApiGatewayTest {
     // args: args[0] username   args[1] password
     public static void main(String[] args) throws Exception {
 
-        String rbacToken = getRbacToken("http://devicbc.sichuancredit.cn:89/auth/token", "apigateway", args[0], args[1]);
+        String rbacToken = getRbacToken("http://devicbc.sichuancredit.cn:88/auth/token", "apigateway", args[0], args[1]);
         System.out.println(rbacToken);
 
         // issue request
@@ -48,7 +48,7 @@ public class ApiGatewayTest {
         String requestData = JSONObject.toJSONString(encryptedData);
         System.out.println("加密后："  + requestData);
 
-        String response = Unirest.post("http://devicbc.sichuancredit.cn:89/rawdata")
+        String response = Unirest.post("http://devicbc.sichuancredit.cn:88/v2/enterprises/customized/modules/rawdata")
                 .header(HttpHeaders.AUTHORIZATION, rbacToken)
                 .header(HttpHeaders.CONTENT_TYPE, "application/json")
                 .body(requestData)
