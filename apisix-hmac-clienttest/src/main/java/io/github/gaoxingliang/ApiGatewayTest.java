@@ -48,16 +48,16 @@ public class ApiGatewayTest {
         String requestData = JSONObject.toJSONString(encryptedData);
         System.out.println("加密后："  + requestData);
 
-        String response = Unirest.post("http://devicbc.sichuancredit.cn:88/v2/enterprises/customized/modules/rawdata")
+        HttpResponse<String> response = Unirest.post("http://devicbc.sichuancredit.cn:88/v2/enterprises/customized/modules/rawdata")
                 .header(HttpHeaders.AUTHORIZATION, rbacToken)
                 .header(HttpHeaders.CONTENT_TYPE, "application/json")
                 .body(requestData)
-                .asString().getBody();
+                .asString();
 
-        System.out.println("收到回复" + response);
+        System.out.println("收到回复" + response.getBody() + " headers:" + response.getHeaders() + " status:" + response.getStatus());
 
         // 解密
-        EncryptedData responseEncryptedData = JSONObject.parseObject(response, EncryptedData.class);
+        EncryptedData responseEncryptedData = JSONObject.parseObject(response.getBody(), EncryptedData.class);
         String sm4Key2 = MySmUtil.sm2Decrypt(responseEncryptedData.getEncryptKey(), privKey);
         // 国密Sm4解密返回的数据
         String dataStr = MySmUtil.sm4Decrypt(responseEncryptedData.getData(), sm4Key2);
