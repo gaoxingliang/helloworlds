@@ -53,15 +53,17 @@ public class ApiGatewayTest {
                 .header(HttpHeaders.CONTENT_TYPE, "application/json")
                 .body(requestData)
                 .asString();
-
         System.out.println("收到回复" + response.getBody() + " headers:" + response.getHeaders() + " status:" + response.getStatus());
-
-        // 解密
-        EncryptedData responseEncryptedData = JSONObject.parseObject(response.getBody(), EncryptedData.class);
-        String sm4Key2 = MySmUtil.sm2Decrypt(responseEncryptedData.getEncryptKey(), privKey);
-        // 国密Sm4解密返回的数据
-        String dataStr = MySmUtil.sm4Decrypt(responseEncryptedData.getData(), sm4Key2);
-        System.out.println("Sm解密数据为: " + dataStr);
+        if (response.getStatus() == 200) {
+            // 解密
+            EncryptedData responseEncryptedData = JSONObject.parseObject(response.getBody(), EncryptedData.class);
+            String sm4Key2 = MySmUtil.sm2Decrypt(responseEncryptedData.getEncryptKey(), privKey);
+            // 国密Sm4解密返回的数据
+            String dataStr = MySmUtil.sm4Decrypt(responseEncryptedData.getData(), sm4Key2);
+            System.out.println("Sm解密数据为: " + dataStr);
+        }  else {
+            System.err.println("Non 200 return code");
+        }
     }
 
 
