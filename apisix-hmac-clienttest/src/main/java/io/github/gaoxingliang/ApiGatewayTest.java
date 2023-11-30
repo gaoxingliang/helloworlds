@@ -15,7 +15,7 @@ public class ApiGatewayTest {
     // args: args[0] username   args[1] password
     public static void main(String[] args) throws Exception {
 
-        String rbacToken = getRbacToken("http://devicbc.sichuancredit.cn:88/auth/token", "apigateway", args[0], args[1]);
+        String rbacToken = getRbacToken("http://devicbc.sichuancredit.cn:88/auth/token", "data", args[0], args[1]);
         System.out.println(rbacToken);
 
         // POST示例
@@ -91,7 +91,6 @@ public class ApiGatewayTest {
         d.put("appid", appid);
         d.put("username", u);
         d.put("password", p);
-        d.put("authType", 1);
 
         HttpResponse<String> response = Unirest.post(url)
                 .header("Content-Type", "application/json")
