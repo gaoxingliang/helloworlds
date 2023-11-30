@@ -18,6 +18,7 @@ public class ApiGatewayTest {
         String rbacToken = getRbacToken("http://devicbc.sichuancredit.cn:88/auth/token", "apigateway", args[0], args[1]);
         System.out.println(rbacToken);
 
+        // POST示例
         // issue request
         String body = "{\n" +
                 "    \"type\":\"7\",\n" +
@@ -52,6 +53,24 @@ public class ApiGatewayTest {
                 .header(HttpHeaders.AUTHORIZATION, rbacToken)
                 .header(HttpHeaders.CONTENT_TYPE, "application/json")
                 .body(requestData)
+                .asString();
+        System.out.println("收到回复" + response.getBody() + " headers:" + response.getHeaders() + " status:" + response.getStatus());
+        if (response.getStatus() == 200) {
+            // 解密
+            EncryptedData responseEncryptedData = JSONObject.parseObject(response.getBody(), EncryptedData.class);
+            String sm4Key2 = MySmUtil.sm2Decrypt(responseEncryptedData.getEncryptKey(), privKey);
+            // 国密Sm4解密返回的数据
+            String dataStr = MySmUtil.sm4Decrypt(responseEncryptedData.getData(), sm4Key2);
+            System.out.println("Sm解密数据为: " + dataStr);
+        }  else {
+            System.err.println("Non 200 return code");
+        }
+
+        // GET请求示例
+        System.out.println("Get 请求开始-----------");
+        response = Unirest.get("http://devicbc.sichuancredit.cn:88/v2/enterprises/customized/modules/test")
+                .header(HttpHeaders.AUTHORIZATION, rbacToken)
+                .queryString("hello", "world")
                 .asString();
         System.out.println("收到回复" + response.getBody() + " headers:" + response.getHeaders() + " status:" + response.getStatus());
         if (response.getStatus() == 200) {
