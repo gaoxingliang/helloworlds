@@ -3,6 +3,15 @@ package cn.sichuancredit.apigateway.encryption;
 public class EncryptedData {
     String encryptKey;
     String data;
+    String dataStatus;
+
+    public String getDataStatus() {
+        return dataStatus;
+    }
+
+    public void setDataStatus(String dataStatus) {
+        this.dataStatus = dataStatus;
+    }
 
     public String getEncryptKey() {
         return encryptKey;

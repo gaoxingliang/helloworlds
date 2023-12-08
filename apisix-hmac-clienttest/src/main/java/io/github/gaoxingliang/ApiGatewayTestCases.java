@@ -34,14 +34,14 @@ public class ApiGatewayTestCases {
 //        testRestrictedConsumers();
 //        testExecutions();
 //        testDiscreditExecutions();
-//        testAuctions();
-        testBasicInfo();
+        testAuctions();
+        //testBasicInfo();
     }
 
 
     public static void testBasicInfo() {
         Map<String, Object> params = new HashMap<>();
-        params.put("enterprise", "廊坊市翡翠华庭房地产开发有限公司");
+        params.put("enterprise", "廊坊1市翡翠华庭房地产开发有限公司");
         getRequest("/v2/enterprises/ent-ba/modules/basicinfo", params);
     }
 
@@ -111,6 +111,7 @@ public class ApiGatewayTestCases {
             // 国密Sm4解密返回的数据
             String dataStr = MySmUtil.sm4Decrypt(responseEncryptedData.getData(), sm4Key2);
             System.out.println("Sm解密数据为: " + dataStr);
+            System.out.println("数据状态：" + responseEncryptedData.getDataStatus());
         }  else {
             System.err.println("Non 200 return code");
             System.exit(1);
