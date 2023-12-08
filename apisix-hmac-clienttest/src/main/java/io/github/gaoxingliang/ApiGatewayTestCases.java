@@ -27,8 +27,61 @@ public class ApiGatewayTestCases {
         privKey = FileUtil.readString(new File("D:\\temp\\priv.txt"), Charset.forName("UTF-8")).trim();
         pubKey = FileUtil.readString(new File("D:\\temp\\pub.txt"), Charset.forName("UTF-8")).trim();
 
-        testScale();
-        testBenefitPerson();
+//        testScale();
+//        testBenefitPerson();
+//        testTaxCases();
+//        testTaxArrears();
+//        testRestrictedConsumers();
+//        testExecutions();
+//        testDiscreditExecutions();
+//        testAuctions();
+        testBasicInfo();
+    }
+
+
+    public static void testBasicInfo() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "廊坊市翡翠华庭房地产开发有限公司");
+        getRequest("/v2/enterprises/ent-ba/modules/basicinfo", params);
+    }
+
+
+    public static void testDiscreditExecutions() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "廊坊市翡翠华庭房地产开发有限公司");
+        getRequest("/v2/enterprises/justices/modules/auctions", params);
+    }
+
+    public static void testAuctions() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "福建乐旺佳贸易有限公司");
+        getRequest("/v2/enterprises/justices/modules/enforcements", params);
+    }
+
+
+
+    public static void testExecutions() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "乐视致新电子科技（天津）有限公司");
+        getRequest("/v2/enterprises/justices/modules/enforcements", params);
+    }
+
+    public static void testRestrictedConsumers() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "乐视致新电子科技（天津）有限公司");
+        getRequest("/v2/enterprises/justices/modules/restricted-consumers", params);
+    }
+
+    public static void testTaxArrears() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "拉德餐饮（上海）有限公司");
+        getRequest("/v2/enterprises/taxinfo/modules/arrears", params);
+    }
+
+    public static void testTaxCases() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "四川征信有限公司");
+        getRequest("/v2/enterprises/taxinfo/modules/taxcases", params);
     }
 
     public static void testBenefitPerson() {
