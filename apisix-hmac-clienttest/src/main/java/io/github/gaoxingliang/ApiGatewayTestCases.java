@@ -34,17 +34,43 @@ public class ApiGatewayTestCases {
 //        testRestrictedConsumers();
 //        testExecutions();
 //        testDiscreditExecutions();
-        testAuctions();
-        //testBasicInfo();
+//        testAuctions();
+//        testCorportateinfo();
+//        testBasicInfo();
+//        testOpenCase();
+//        testShareholders();
+//        testPersons();
     }
 
+    public static void testShareholders() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "廊坊市翡翠华庭房地产开发有限公司");
+        getRequest("/v2/enterprises/ent-ba/modules/shareholders", params);
+    }
+
+    public static void testPersons() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "廊坊市翡翠华庭房地产开发有限公司");
+        getRequest("/v2/enterprises/ent-ba/modules/persons", params);
+    }
+
+    public static void testOpenCase() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "廊坊市翡翠华庭房地产开发有限公司");
+        getRequest("/v2/enterprises/justices/modules/opencase", params);
+    }
+
+    public static void testCorportateinfo() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "廊坊市翡翠华庭房地产开发有限公司");
+        getRequest("/v2/enterprises/ent-ba/modules/corporateinfo", params);
+    }
 
     public static void testBasicInfo() {
         Map<String, Object> params = new HashMap<>();
-        params.put("enterprise", "廊坊1市翡翠华庭房地产开发有限公司");
+        params.put("enterprise", "廊坊市翡翠华庭房地产开发有限公司");
         getRequest("/v2/enterprises/ent-ba/modules/basicinfo", params);
     }
-
 
     public static void testDiscreditExecutions() {
         Map<String, Object> params = new HashMap<>();
@@ -57,8 +83,6 @@ public class ApiGatewayTestCases {
         params.put("enterprise", "福建乐旺佳贸易有限公司");
         getRequest("/v2/enterprises/justices/modules/enforcements", params);
     }
-
-
 
     public static void testExecutions() {
         Map<String, Object> params = new HashMap<>();
@@ -92,7 +116,7 @@ public class ApiGatewayTestCases {
 
     public static void testScale() {
         Map<String, Object> params = new HashMap<>();
-        params.put("enterprise", "四川征信有限公司");
+        params.put("enterprise", "阿里巴巴（中国）有限公司");
         getRequest("/v2/enterprises/ent-ba/modules/scale", params);
     }
 
