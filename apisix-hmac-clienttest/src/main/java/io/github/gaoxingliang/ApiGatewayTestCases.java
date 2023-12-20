@@ -40,6 +40,34 @@ public class ApiGatewayTestCases {
 //        testOpenCase();
 //        testShareholders();
 //        testPersons();
+//        testActualController();
+//        testAdminPunishment();
+//        testSearch();
+        testSocialAssurance();
+    }
+
+    public static void testSocialAssurance() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "成都创新房地产开发有限公司");
+        getRequest("/v2/enterprises/ent-operate/modules/social-insurance", params);
+    }
+
+    public static void testSearch() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("keyword", "四川征信");
+        getRequest("/v2/enterprises/customized/modules/search", params);
+    }
+
+    public static void testAdminPunishment() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "廊坊市翡翠华庭房地产开发有限公司");
+        getRequest("/v2/enterprises/ent-operate/modules/administrative-punishments", params);
+    }
+
+    public static void testActualController() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "廊坊市翡翠华庭房地产开发有限公司");
+        getRequest("/v2/enterprises/ent-ba/modules/actual-controller", params);
     }
 
     public static void testShareholders() {
@@ -75,13 +103,13 @@ public class ApiGatewayTestCases {
     public static void testDiscreditExecutions() {
         Map<String, Object> params = new HashMap<>();
         params.put("enterprise", "廊坊市翡翠华庭房地产开发有限公司");
-        getRequest("/v2/enterprises/justices/modules/auctions", params);
+        getRequest("/v2/enterprises/justices/modules/discredit-enforcements", params);
     }
 
     public static void testAuctions() {
         Map<String, Object> params = new HashMap<>();
         params.put("enterprise", "福建乐旺佳贸易有限公司");
-        getRequest("/v2/enterprises/justices/modules/enforcements", params);
+        getRequest("/v2/enterprises/justices/modules/auctions", params);
     }
 
     public static void testExecutions() {
