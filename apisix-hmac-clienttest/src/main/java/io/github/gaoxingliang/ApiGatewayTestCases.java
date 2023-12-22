@@ -43,7 +43,37 @@ public class ApiGatewayTestCases {
 //        testActualController();
 //        testAdminPunishment();
 //        testSearch();
-        testSocialAssurance();
+//        testSocialAssurance();
+//        testTaxRelated();
+//        testEmploymentrelid();
+        testAnnualReport();
+    }
+
+    public static void testAnnualReport() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "成都创新房地产开发有限公司");
+        getRequest("/v2/enterprises/ent-ba/modules/annualreports", params);
+    }
+
+    public static void testEmploymentrelid() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("idCard", "500235199101010101");
+        params.put("name", "高兴");
+        getRequest("/v2/enterprises/ent-ba/modules/entemployrelid", params);
+    }
+
+    public static void testTaxRelated() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("taxpyrIdNo", "9156CU30AM60911D1E");
+        getRequest("/v2/enterprises/taxinfo/modules/basicinfo", params);
+        getRequest("/v2/enterprises/taxinfo/modules/declaration", params);
+        getRequest("/v2/enterprises/taxinfo/modules/financialstatements", params);
+        getRequest("/v2/enterprises/taxinfo/modules/interaction", params);
+        getRequest("/v2/enterprises/taxinfo/modules/abnormal", params);
+        getRequest("/v2/enterprises/taxinfo/modules/shareholders", params);
+        getRequest("/v2/enterprises/taxinfo/modules/taxrate", params);
+        getRequest("/v2/enterprises/taxinfo/modules/incomeinvoice", params);
+        getRequest("/v2/enterprises/taxinfo/modules/saleinvoice", params);
     }
 
     public static void testSocialAssurance() {
@@ -150,7 +180,7 @@ public class ApiGatewayTestCases {
 
     public static void getRequest(String path, Map<String, Object> params) {
         // GET请求示例
-        System.out.println("Get 请求开始-----------");
+        System.out.println("Get 请求开始-----------" + path + " params:" + params);
         HttpResponse<String> response = Unirest.get(endpoint + path)
                 .header(HttpHeaders.AUTHORIZATION, token)
                 .queryString(params)
