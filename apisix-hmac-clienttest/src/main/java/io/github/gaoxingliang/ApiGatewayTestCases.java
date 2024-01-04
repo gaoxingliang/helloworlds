@@ -24,8 +24,8 @@ public class ApiGatewayTestCases {
         token = rbacToken;
 
         // 加密数据
-        privKey = FileUtil.readString(new File("D:\\temp\\priv.txt"), Charset.forName("UTF-8")).trim();
-        pubKey = FileUtil.readString(new File("D:\\temp\\pub.txt"), Charset.forName("UTF-8")).trim();
+        privKey = FileUtil.readString(new File("D:\\code\\helloworlds\\apisix-hmac-clienttest\\sczx-priv.txt"), Charset.forName("UTF-8")).trim();
+        pubKey = FileUtil.readString(new File("D:\\code\\helloworlds\\apisix-hmac-clienttest\\sczx-pub.txt"), Charset.forName("UTF-8")).trim();
 
 //        testScale();
 //        testBenefitPerson();
@@ -42,11 +42,20 @@ public class ApiGatewayTestCases {
 //        testPersons();
 //        testActualController();
 //        testAdminPunishment();
-//        testSearch();
+        testSearch();
 //        testSocialAssurance();
 //        testTaxRelated();
 //        testEmploymentrelid();
-        testAnnualReport();
+//        testAnnualReport()
+//        testSeizure();
+
+    }
+    public static void testSeizure() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "小米科技");
+        params.put("pageNumber", "1");
+        params.put("pageSize", "10");
+        getRequest("/v2/enterprises/justices/modules/seizures", params);
     }
 
     public static void testAnnualReport() {
@@ -54,6 +63,7 @@ public class ApiGatewayTestCases {
         params.put("enterprise", "成都创新房地产开发有限公司");
         getRequest("/v2/enterprises/ent-ba/modules/annualreports", params);
     }
+    // /v2/enterprises/justices/modules/seizures
 
     public static void testEmploymentrelid() {
         Map<String, Object> params = new HashMap<>();
