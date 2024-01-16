@@ -52,6 +52,42 @@ public class ApiGatewayTestCases {
 //        testCopyrights();
 //        testCourtSessions();
 //        testAnnouncements();
+//        testJudgements();
+//        testAdministrativeLicensing();
+//        testTrademarks();
+//        testPatents();
+//        testFinalCases();
+
+    }
+
+    public static void testFinalCases() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "乐视控股（北京）有限公司");
+        getRequest("/v2/enterprises/justices/modules/finalcases", params);
+    }
+
+    public static void testPatents() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "福建乐旺佳贸易有限公司");
+        getRequest("/v2/enterprises/ent-operate/modules/patents", params);
+    }
+
+    public static void testTrademarks() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "福建乐旺佳贸易有限公司");
+        getRequest("/v2/enterprises/ent-operate/modules/trademarks", params);
+    }
+
+    public static void testAdministrativeLicensing() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "阿里巴巴（中国）有限公司");
+        getRequest("/v2/enterprises/ent-operate/modules/licensing", params);
+    }
+
+    public static void testJudgements() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "福建乐旺佳贸易有限公司");
+        getRequest("/v2/enterprises/justices/modules/judgements", params);
     }
 
     public static void testAnnouncements() {
@@ -200,7 +236,7 @@ public class ApiGatewayTestCases {
 
     public static void testTaxCases() {
         Map<String, Object> params = new HashMap<>();
-        params.put("enterprise", "四川征信有限公司");
+        params.put("enterprise", "福建乐旺佳贸易有限公司");
         getRequest("/v2/enterprises/taxinfo/modules/taxcases", params);
     }
 
