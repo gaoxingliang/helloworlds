@@ -57,8 +57,22 @@ public class ApiGatewayTestCases {
 //        testTrademarks();
 //        testPatents();
 //        testFinalCases();
-
+//        testDomains();
+//        testInvestments();
     }
+
+    public static void testInvestments() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "北京启明星辰信息安全技术有限公司");
+        getRequest("/v2/enterprises/ent-ba/modules/investments", params);
+    }
+
+    public static void testDomains() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "北京启明星辰信息安全技术有限公司");
+        getRequest("/v2/enterprises/ent-operate/modules/domains", params);
+    }
+
 
     public static void testFinalCases() {
         Map<String, Object> params = new HashMap<>();
