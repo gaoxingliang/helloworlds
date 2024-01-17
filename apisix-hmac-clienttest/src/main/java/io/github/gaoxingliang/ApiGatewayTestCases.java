@@ -59,6 +59,20 @@ public class ApiGatewayTestCases {
 //        testFinalCases();
 //        testDomains();
 //        testInvestments();
+        testCaseFlows();
+        testSeizures();
+    }
+
+    public static void testSeizures() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "小米科技");
+        getRequest("/v2/enterprises/justices/modules/seizures", params);
+    }
+
+    public static void testCaseFlows() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "小米科技");
+        getRequest("/v2/enterprises/justices/modules/caseflows", params);
     }
 
     public static void testInvestments() {
