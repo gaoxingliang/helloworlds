@@ -1,27 +1,24 @@
 import cn.sichuancredit.apigateway.encryption.*;
-import cn.sichuancredit.apigateway.encryption.tianfucredit.*;
 import com.alibaba.fastjson.*;
 import kong.unirest.*;
 import org.apache.commons.codec.digest.*;
-import org.apache.commons.lang3.*;
 import org.junit.jupiter.api.*;
 
-import java.nio.charset.*;
 import java.util.*;
 
 /**
- * RSA加密的天府信用通api
- * {@link TianfuCreditSMTestCases}
+ * 国密加密的天府信用通api
+ * {@link TianfuCreditTestCases}
  */
-public class TianfuCreditTestCases {
+public class TianfuCreditSMTestCases {
 
     @Test
     void test() throws Exception {
         // 按照实际修改为提供的信息
-        String pub = TestCases.readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\tfcredit-bank-pub.txt");
-        String priv = TestCases.readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\tfcredit-bank-priv.txt");
+        String pub = TestCases.readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\tfcredit-bank-sm-pub-tf.txt");
+        String priv = TestCases.readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\tfcredit-bank-sm-priv.txt");
         String orgcode = TestCases.readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\tfcredit-bank-orgcode.txt");
-        String url = "https://dev.sichuancredit.cn/xrtong/v1/outerApi/product";
+        String url = "https://dev.sichuancredit.cn/xrtong/smv1/outerApi/product";
 
         // 请求参数
         TreeMap dataMap = new TreeMap();
@@ -41,12 +38,11 @@ public class TianfuCreditTestCases {
 
         JSONObject body = new JSONObject();
         body.putAll(dataMap);
-        String pwd = RandomStringUtils.randomAlphanumeric(16);
-        byte [] encryptedByte = RsaKeyApi.pubEncrypt(pub, pwd.getBytes(), "RSA");
-        byte [] aesData = AesKeyApi.encrypt(body.toJSONString().getBytes(StandardCharsets.UTF_8), pwd.getBytes());
-
-        String encryptKey = Base64.getEncoder().encodeToString(encryptedByte);
-        String data = Base64.getEncoder().encodeToString(aesData);
+        // 随机生成Sm4密钥
+        String sm4Key = MySmUtil.generateSm4Key();
+        // 国密Sm2公钥加密Sm4秘钥
+        String encryptKey = MySmUtil.sm2Encrypt(sm4Key, pub);
+        String data = MySmUtil.sm4Encrypt(body.toJSONString(), sm4Key);
         // 请求参数map
         EncryptedData encryptedData = new EncryptedData();
         encryptedData.setData(data);
@@ -64,10 +60,12 @@ public class TianfuCreditTestCases {
             EncryptedData resp = JSONObject.parseObject(result.getBody(), EncryptedData.class);
 
             // 解密返回：
-            byte [] aesKey = RsaKeyApi.priDecrypt(priv, Base64.getDecoder().decode(resp.getEncryptKey()), "RSA");
-            byte [] resultData = AesKeyApi.decrypt(Base64.getDecoder().decode(resp.getData()), aesKey);
+            // 国密Sm2私钥解密Sm4密码获得Sm4密钥
+            String respSm4Key = MySmUtil.sm2Decrypt(resp.getEncryptKey(), priv);
+            // 国密Sm4解密返回的数据
+            String dataStr = MySmUtil.sm4Decrypt(resp.getData(), respSm4Key);
             System.out.println("请求返回：");
-            System.out.println(new String(resultData));
+            System.out.println(dataStr);
         } else {
             System.err.println("Non 200 code " + result.getHeaders() + " " + result.getStatus() + " " + result.getBody());
         }
