@@ -18,12 +18,9 @@ public class TestCases {
     static void auth() throws Exception {
         // 修改为提供的授权信息
         username = "sichuanzhengxin";
-        password = FileUtil.readString(new File("D:\\code\\helloworlds\\apisix-hmac-clienttest\\sczx-password.txt"),
-                Charset.forName("UTF-8")).trim();
-        privKey =
-                FileUtil.readString(new File("D:\\code\\helloworlds\\apisix-hmac-clienttest\\sczx-priv.txt"), Charset.forName("UTF-8")).trim();
-        pubKey =
-                FileUtil.readString(new File("D:\\code\\helloworlds\\apisix-hmac-clienttest\\sczx-pub.txt"), Charset.forName("UTF-8")).trim();
+        password = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\sczx-password.txt");
+        privKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\sczx-priv.txt");
+        pubKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\sczx-pub.txt");
 
         String rbacToken = getRbacToken(endpoint + "/auth/token", "data", username, password);
         System.out.println(rbacToken);
@@ -335,5 +332,9 @@ public class TestCases {
         }
 
         return t;
+    }
+
+    public static String readFile(String file) {
+        return FileUtil.readString(new File(file), Charset.forName("UTF-8")).trim();
     }
 }
