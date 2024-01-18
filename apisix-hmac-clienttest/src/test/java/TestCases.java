@@ -10,6 +10,9 @@ import java.io.*;
 import java.nio.charset.*;
 import java.util.*;
 
+/**
+ * 数据服务测试用例
+ */
 public class TestCases {
     private static final String endpoint = "http://devicbc.sichuancredit.cn:88";
     private static String username, password, token, privKey, pubKey;
@@ -25,6 +28,13 @@ public class TestCases {
         String rbacToken = getRbacToken(endpoint + "/auth/token", "data", username, password);
         System.out.println(rbacToken);
         token = rbacToken;
+    }
+
+    @Test
+    void testBidding() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "成都成电光信科技股份有限公司");
+        getRequest("/v2/enterprises/ent-operate/modules/bidding", params);
     }
 
     @Test
