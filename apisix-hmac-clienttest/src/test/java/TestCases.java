@@ -31,6 +31,14 @@ public class TestCases {
     }
 
     @Test
+    void testLandTenures() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "广州香雪空港跨境物联有限公司");
+        params.put("type", "TYPE_LAND_ANNOUNCEMENT");
+        getRequest("/v2/enterprises/ent-operate/modules/landtenures", params);
+    }
+
+    @Test
     void testBidding() {
         Map<String, Object> params = new HashMap<>();
         params.put("enterprise", "成都成电光信科技股份有限公司");
