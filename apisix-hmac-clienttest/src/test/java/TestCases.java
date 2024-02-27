@@ -1,8 +1,8 @@
 import cn.hutool.core.io.*;
 import cn.sichuancredit.apigateway.encryption.*;
 import com.alibaba.fastjson.*;
-import kong.unirest.*;
 import kong.unirest.HttpResponse;
+import kong.unirest.*;
 import org.apache.http.*;
 import org.junit.jupiter.api.*;
 
@@ -14,20 +14,36 @@ import java.util.*;
  * 数据服务测试用例
  */
 public class TestCases {
-    private static final String endpoint = "http://devicbc.sichuancredit.cn:88";
+    private static String endpoint = "http://devicbc.sichuancredit.cn:88";
     private static String username, password, token, privKey, pubKey;
+
+    static {
+        Unirest.config().automaticRetries(false);
+    }
 
     @BeforeAll
     static void auth() throws Exception {
         // 修改为提供的授权信息
+        // 开发环境：
         username = "sichuanzhengxin";
         password = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\sczx-password.txt");
         privKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\sczx-priv.txt");
         pubKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\sczx-pub.txt");
+        if (false) {
+            // 生产环境
+            endpoint = "https://api.tianfucredit.cn";
+        }
 
         String rbacToken = getRbacToken(endpoint + "/auth/token", "data", username, password);
         System.out.println(rbacToken);
         token = rbacToken;
+    }
+
+    @Test
+    void testEntEmploy() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "广州香雪空港跨境物联有限公司");
+        getRequest("/v2/enterprises/ent-ba/modules/entemploy", params);
     }
 
     @Test
@@ -56,13 +72,17 @@ public class TestCases {
     void testSeizures() {
         Map<String, Object> params = new HashMap<>();
         params.put("enterprise", "小米科技");
+        params.put("pageSize", "10");
+        params.put("pageNumber", "1");
         getRequest("/v2/enterprises/justices/modules/seizures", params);
     }
 
     @Test
     void testCaseFlows() {
         Map<String, Object> params = new HashMap<>();
-        params.put("enterprise", "小米科技");
+        params.put("enterprise", "成都香岸餐饮管理有限公司");
+        params.put("pageSize", "10");
+        params.put("pageNumber", "1");
         getRequest("/v2/enterprises/justices/modules/caseflows", params);
     }
 
@@ -306,7 +326,7 @@ public class TestCases {
     // 辅助方法 ---------------------------------------------
     public static void getRequest(String path, Map<String, Object> params) {
         // GET请求示例
-        System.out.println("Get 请求开始-----------" + path + " params:" + params);
+        System.out.println("Get 请求开始-----------" + endpoint + path + " params:" + params);
         HttpResponse<String> response = Unirest.get(endpoint + path)
                 .header(HttpHeaders.AUTHORIZATION, token)
                 .queryString(params)
@@ -328,6 +348,7 @@ public class TestCases {
 
 
     public static String getRbacToken(String url, String appid, String u, String p) throws Exception {
+        System.out.println(url);
         JSONObject d = new JSONObject();
         d.put("appid", appid);
         d.put("username", u);
