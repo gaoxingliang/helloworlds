@@ -25,10 +25,10 @@ public class TestCases {
     static void auth() throws Exception {
         // 修改为提供的授权信息
         // 开发环境：
-        username = "sichuanzhengxin";
-        password = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\sczx-password.txt");
-        privKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\sczx-priv.txt");
-        pubKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\sczx-pub.txt");
+        username = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test-username.txt");
+        password = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test-password.txt");
+        privKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test-user-priv.txt");
+        pubKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test-sczx-pub.txt");
         if (false) {
             // 生产环境
             endpoint = "https://api.tianfucredit.cn";
