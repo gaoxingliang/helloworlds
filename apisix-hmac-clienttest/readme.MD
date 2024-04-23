@@ -26,4 +26,10 @@ the apisix consumer hmac-auth plugin conf test:
 }
 ```
 
-
+The hmac request test: [HmacGetRequestTest](./src/main/java/io/github/gaoxingliang/HmacGetRequestTest.java) & [HmacPostRequestTest](./src/main/java/io/github/gaoxingliang/HmacPostRequestTest.java)
+<br>
+Use data api gateway: [ApiGateWayTest](./src/test/java/TestCases.java)
+<br>
+TianfuCredit api sm test case: [TianfuCreditSMTestCases](./src/test/java/TianfuCreditSMTestCases.java) 
+<br>
+TianfuCredit api rsa test case: [TianfuCreditTestCases](./src/test/java/TianfuCreditTestCases.java)

@@ -7,7 +7,7 @@ import org.apache.http.*;
 import java.security.*;
 import java.util.*;
 
-public class RnaMainLocal {
+public class HmacPostRequestTest {
     /**
      * args[0] : accessKey
      * args[1] : secretKey
@@ -20,27 +20,33 @@ public class RnaMainLocal {
 
         Map<String, String> signedHeaders = new HashMap<>();
 
-        signedHeaders.put("X-Provider-ID", "C_18141A");
+        signedHeaders.put("X-Provider-ID", "TEST");
         signedHeaders.put("Content-Type", "application/json");
-        String body = "";
+        String body = "{\n" +
+                "    \"type\":\"7\",\n" +
+                "    \"service_url\" :\"/EFRS/INFOSERVICE2/companydetails/V3\",\n" +
+                "    \"req_data\" :{\n" +
+                "        \"key\":\"阿里巴巴(中国)有限公司\",\n" +
+                "        \"keyType\":\"32\",\n" +
+                "        \"model\":\"ENTINFO\"\n" +
+                "    },\n" +
+                "    \"source\":\"3\"\n" +
+                "}";
 
-        String uri = "/enterprises/ent-ba/modules/legalpersoncheck";
+        String uri = "/enterprises/customized/modules/rawdata";
         String date = SignUtil.getDate();
-        Map<String, Object> qp = new TreeMap<>();
-        qp.put("id", "511111199011110005");
-        qp.put("name", "张三");
-        qp.put("phone", "17728897200");
-        String signature = SignUtil.generateSignature(accessKey, secretKey, "POST", uri, qp, signedHeaders);
+
+        String signature = SignUtil.generateSignature(accessKey, secretKey, "POST", uri, null, signedHeaders);
 
         String authHeader = String.format("hmac-auth-v1#%s#%s#%s#%s#%s", accessKey, signature, "hmac-sha256", date,
                 Joiner.on(";").join(SignUtil.SIGNED_HEADERS));
-        String bodyDigestHeader = Base64.getEncoder().encodeToString(SignUtil.sign(secretKey.getBytes(), ""));
+        String bodyDigestHeader = Base64.getEncoder().encodeToString(SignUtil.sign(secretKey.getBytes(), body));
 
-        String response = Unirest.get("http://devicbc.sichuancredit.cn:88" + uri)
-                .queryString(qp)
+        String response = Unirest.post("http://devicbc.sichuancredit.cn:88" + uri)
                 .headers(signedHeaders)
                 .header(HttpHeaders.AUTHORIZATION, authHeader)
                 .header(SignUtil.BODY_DIGEST_HEADER, bodyDigestHeader)
+                .body(body)
                 .asString().getBody();
 
         System.out.println(response);
