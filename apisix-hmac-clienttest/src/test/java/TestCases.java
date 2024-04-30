@@ -40,6 +40,34 @@ public class TestCases {
     }
 
     @Test
+    void testJudicialFreezes() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "上海兆瓦投资咨询有限公司");
+        getRequest("/v2/enterprises/justices/modules/judicialfreezes", params);
+    }
+
+    @Test
+    void testLogoutRecords() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "太原市星雅石材有限公司");
+        getRequest("/v2/enterprises/justices/modules/logoutrecords", params);
+    }
+
+    @Test
+    void testNotices() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "吴江市远征彩钢板活动房厂");
+        getRequest("/v2/enterprises/justices/modules/notices", params);
+    }
+
+    @Test
+    void testOperationAbnormals() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "乐视致新电子科技（天津）有限公司");
+        getRequest("/v2/enterprises/ent-operate/modules/operation-abnormals", params);
+    }
+
+    @Test
     void testEntEmploy() {
         Map<String, Object> params = new HashMap<>();
         params.put("enterprise", "广州香雪空港跨境物联有限公司");
