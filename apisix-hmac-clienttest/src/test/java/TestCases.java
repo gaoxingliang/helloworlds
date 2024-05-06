@@ -68,6 +68,41 @@ public class TestCases {
     }
 
     @Test
+    void testSuppliers() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "北京金泰得生物科技股份有限公司");
+        getRequest("/v2/enterprises/industrial/modules/suppliers", params);
+    }
+
+    @Test
+    void testDistributors() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "北京清畅电力技术股份有限公司");
+        getRequest("/v2/enterprises/industrial/modules/distributors", params);
+    }
+
+    @Test
+    void testCoreMembers() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "北京九十度生活科技有限公司");
+        getRequest("/v2/enterprises/customized/modules/coremembers", params);
+    }
+
+    @Test
+    void testCreditLevels() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "福建宇桐机械有限公司");
+        getRequest("/v2/enterprises/taxinfo/modules/taxcreditlevels", params);
+    }
+
+    @Test
+    void testTaxpayerinfo() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "苏州科达科技股份有限公司");
+        getRequest("/v2/enterprises/taxinfo/modules/taxpayerinfos", params);
+    }
+
+    @Test
     void testEntEmploy() {
         Map<String, Object> params = new HashMap<>();
         params.put("enterprise", "广州香雪空港跨境物联有限公司");
