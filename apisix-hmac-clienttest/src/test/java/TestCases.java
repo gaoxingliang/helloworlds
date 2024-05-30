@@ -29,14 +29,39 @@ public class TestCases {
         password = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test-password.txt");
         privKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test-user-priv.txt");
         pubKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test-sczx-pub.txt");
-        if (false) {
+        if (true) {
             // 生产环境
             endpoint = "https://api.tianfucredit.cn";
+            username = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\prod\\test-username.txt");
+            password = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\prod\\test-password.txt");
+            privKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\prod\\test-user-priv.txt");
+            pubKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\prod\\test-sczx-pub.txt");
         }
 
         String rbacToken = getRbacToken(endpoint + "/auth/token", "data", username, password);
         System.out.println(rbacToken);
         token = rbacToken;
+    }
+
+    @Test
+    void testTaxCreditLevels() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "福建宇桐机械有限公司");
+        getRequest("/v2/enterprises/taxinfo/modules/taxcreditlevels", params);
+    }
+
+    @Test
+    void testCapitalType() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "上海兆瓦投资咨询有限公司");
+        getRequest("/v2/enterprises/ent-ba/modules/capitaltype", params);
+    }
+
+    @Test
+    void testTaxPayerInfos() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "上海兆瓦投资咨询有限公司");
+        getRequest("/v2/enterprises/taxinfo/modules/taxpayerinfos", params);
     }
 
     @Test
