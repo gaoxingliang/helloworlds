@@ -25,11 +25,11 @@ public class TestCases {
     static void auth() throws Exception {
         // 修改为提供的授权信息
         // 开发环境：
-        username = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test-username.txt");
-        password = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test-password.txt");
-        privKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test-user-priv.txt");
-        pubKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test-sczx-pub.txt");
-        if (true) {
+        username = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test\\sichuanzhengxin\\test-username.txt");
+        password = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test\\sichuanzhengxin\\test-password.txt");
+        privKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test\\sichuanzhengxin\\test-user-priv.txt");
+        pubKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test\\sichuanzhengxin\\test-sczx-pub.txt");
+        if (false) {
             // 生产环境
             endpoint = "https://api.tianfucredit.cn";
             username = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\prod\\test-username.txt");
@@ -41,6 +41,92 @@ public class TestCases {
         String rbacToken = getRbacToken(endpoint + "/auth/token", "data", username, password);
         System.out.println(rbacToken);
         token = rbacToken;
+    }
+
+    @Test
+    void testMainInvestments() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "成都正态铠甲科技有限公司");
+        params.put("name", "罗应儒");
+        getRequest("/v2/enterprises/ent-ba/modules/maininvestments", params);
+    }
+
+    @Test
+    void testAltInfo() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "上海羽昼文化传播有限公司");
+        getRequest("/v2/enterprises/ent-ba/modules/altinfo", params);
+    }
+
+    @Test
+    void testBranches() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "小米科技有限责任公司");
+        getRequest("/v2/enterprises/ent-ba/modules/branches", params);
+    }
+
+    @Test
+    void testEquityPledge() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "中基宁波集团股份有限公司");
+        getRequest("/v2/enterprises/ent-ba/modules/equitypledge", params);
+    }
+
+    @Test
+    void testLogout() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "东莞市盘英服装贸易有限公司");
+        getRequest("/v2/enterprises/ent-ba/modules/logout", params);
+    }
+
+    @Test
+    void testEquityPenetration() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "成都成电光信科技股份有限公司");
+        getRequest("/v2/enterprises/ent-ba/modules/equitypenetration", params);
+    }
+
+    @Test
+    void testSpotCheck() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "福建宇桐机械有限公司");
+        getRequest("/v2/enterprises/ent-operate/modules/spotcheck", params);
+    }
+
+    @Test
+    void testMortgage() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "清远市清新区浸潭镇大冲水电站");
+        getRequest("/v2/enterprises/ent-operate/modules/mortgage", params);
+    }
+
+    @Test
+    void testSeriousIllegal() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "深圳市福田区回春养生贸易商行");
+        getRequest("/v2/enterprises/ent-operate/modules/seriousillegal", params);
+    }
+
+    @Test
+    void testKPropertypledge() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "四川廖老九餐饮管理有限公司");
+        getRequest("/v2/enterprises/ent-operate/modules/kpropertypledge", params);
+    }
+
+    @Test
+    void testLegalpersoncheck() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("creditCode", "91510100MA63807M9M");
+        params.put("idCard", "510124199101010101");
+        getRequest("/v2/enterprises/ent-ba/modules/legalpersoncheck", params);
+    }
+
+    @Test
+    void testCertificates() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "企查查科技股份有限公司");
+        getRequest("/v2/enterprises/ent-operate/modules/certificates", params);
     }
 
     @Test
