@@ -44,6 +44,21 @@ public class TestCases {
     }
 
     @Test
+    void testEntCases() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "河北鹏豪建筑工程有限公司");
+        getRequest("/v2/enterprises/justices/modules/cases", params);
+    }
+
+    @Test
+    void testPersonCases() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", "张三");
+        params.put("idCard", "500235199001011234");
+        getRequest("/v2/enterprises/ent-ba/modules/altinfo", params);
+    }
+
+    @Test
     void testMainInvestments() {
         Map<String, Object> params = new HashMap<>();
         params.put("enterprise", "成都正态铠甲科技有限公司");
