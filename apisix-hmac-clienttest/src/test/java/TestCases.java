@@ -44,6 +44,55 @@ public class TestCases {
     }
 
     @Test
+    void testSocialSecurity() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "唐山市丰南区众鑫铝业有限公司");
+        getRequest("/v2/enterprises/ent-operate/modules/socialsecuritys", params);
+    }
+
+    @Test
+    void testFinances() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "北京九十度生活科技有限公司");
+        getRequest("/v2/enterprises/ent-operate/modules/finances", params);
+    }
+
+    @Test
+    void testDoublecheckups() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "汉阴县文海检验检测有限公司");
+        getRequest("/v2/enterprises/ent-operate/modules/doublecheckups", params);
+    }
+
+    @Test
+    void testGuarantes() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "好利来（中国）电子科技股份有限公司");
+        getRequest("/v2/enterprises/ent-operate/modules/guarantees", params);
+    }
+
+    @Test
+    void testLandDeals() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "北京京东方生命科技有限公司");
+        getRequest("/v2/enterprises/customized/modules/landdeals", params);
+    }
+
+    @Test
+    void testCorpBenefit() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("creditCode", "91330106673976542L");
+        getRequest("/v2/enterprises/ent-ba/modules/corp-beneficiaries", params);
+    }
+
+    @Test
+    void testCorpShareholders() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("creditCode", "91330106673976542L");
+        getRequest("/v2/enterprises/ent-ba/modules/collaborative-shareholders", params);
+    }
+
+    @Test
     void testEntCases() {
         Map<String, Object> params = new HashMap<>();
         params.put("enterprise", "河北鹏豪建筑工程有限公司");
