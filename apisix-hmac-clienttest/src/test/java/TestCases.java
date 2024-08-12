@@ -44,6 +44,39 @@ public class TestCases {
     }
 
     @Test
+    void testTicketCredit() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "中化化肥有限公司");
+        params.put("month", "2024-05");
+        getRequest("/v2/enterprises/ent-operate/modules/ticketcredit", params);
+    }
+
+    @Test
+    void testFourElements() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "四川征信有限公司");
+        params.put("creditCode", "91510100MA7G7KQU8J");
+        params.put("operName", "张宏宇");
+        params.put("idCard", "500235199111111111");
+        getRequest("/v2/enterprises/ent-ba/modules/checkfourelements", params);
+    }
+
+
+    @Test
+    void testCompetitions() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "北京九十度生活科技有限公司");
+        getRequest("/v2/enterprises/customized/modules/competitions", params);
+    }
+
+    @Test
+    void testCaseDetails() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "珠海华发投资发展有限公司");
+        getRequest("/v2/enterprises/justices/modules/casedetails", params);
+    }
+
+    @Test
     void testSocialSecurity() {
         Map<String, Object> params = new HashMap<>();
         params.put("enterprise", "唐山市丰南区众鑫铝业有限公司");
