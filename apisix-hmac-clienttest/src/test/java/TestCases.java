@@ -1,14 +1,17 @@
 import cn.hutool.core.io.*;
+import cn.hutool.core.util.*;
 import cn.sichuancredit.apigateway.encryption.*;
 import com.alibaba.fastjson.*;
 import kong.unirest.HttpResponse;
 import kong.unirest.*;
+import org.apache.commons.lang3.*;
 import org.apache.http.*;
 import org.junit.jupiter.api.*;
 
 import java.io.*;
 import java.nio.charset.*;
 import java.util.*;
+import java.util.zip.*;
 
 /**
  * 数据服务测试用例
@@ -18,7 +21,7 @@ public class TestCases {
     private static String username, password, token, privKey, pubKey;
 
     static {
-        Unirest.config().automaticRetries(false);
+        Unirest.config().automaticRetries(false).socketTimeout(60 * 1000);
     }
 
     @BeforeAll
@@ -41,6 +44,21 @@ public class TestCases {
         String rbacToken = getRbacToken(endpoint + "/auth/token", "data", username, password);
         System.out.println(rbacToken);
         token = rbacToken;
+    }
+
+    @Test
+    void testNegativeNews() {
+        Map<String, Object> params = new HashMap<>();
+        // params.put("enterprise", "乐视网信息技术(北京)股份有限公司");
+        params.put("creditCode", "911100007693890511");
+        getRequest("/v2/enterprises/customized/modules/negativenews", params);
+    }
+
+    @Test
+    void testUnpubAnualReports() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "中化化肥有限公司");
+        getRequest("/v2/enterprises/ent-ba/modules/unpubannualreports", params);
     }
 
     @Test
@@ -128,7 +146,7 @@ public class TestCases {
     @Test
     void testEntCases() {
         Map<String, Object> params = new HashMap<>();
-        params.put("enterprise", "河北鹏豪建筑工程有限公司");
+        params.put("enterprise", "泸州老窖股份有限公司");
         getRequest("/v2/enterprises/justices/modules/cases", params);
     }
 
@@ -597,25 +615,56 @@ public class TestCases {
     // 辅助方法 ---------------------------------------------
     public static void getRequest(String path, Map<String, Object> params) {
         // GET请求示例
-        System.out.println("Get 请求开始-----------" + endpoint + path + " params:" + params);
+        System.out.println(new Date() + "Get 请求开始-----------" + endpoint + path + " params:" + params);
         HttpResponse<String> response = Unirest.get(endpoint + path)
                 .header(HttpHeaders.AUTHORIZATION, token)
                 .queryString(params)
                 .asString();
-        System.out.println("收到回复" + response.getBody() + " headers:" + response.getHeaders() + " status:" + response.getStatus());
+        System.out.println(new Date() + "收到回复" + StringUtils.abbreviate(response.getBody(), 1024) + " headers:" + response.getHeaders() + " status:" + response.getStatus());
         if (response.getStatus() == 200) {
+            String zipVersion = response.getHeaders().getFirst("internal-zip-version");
             // 解密
             EncryptedData responseEncryptedData = JSONObject.parseObject(response.getBody(), EncryptedData.class);
             String sm4Key2 = MySmUtil.sm2Decrypt(responseEncryptedData.getEncryptKey(), privKey);
             // 国密Sm4解密返回的数据
-            String dataStr = MySmUtil.sm4Decrypt(responseEncryptedData.getData(), sm4Key2);
-            System.out.println("Sm解密数据为: " + dataStr);
+            String rawData = responseEncryptedData.getData();
+            String dataStr = MySmUtil.sm4Decrypt(rawData, sm4Key2);
+            if (zipVersion != null && zipVersion.length() > 0 && Integer.valueOf(zipVersion) == 1) {
+                try {
+                    dataStr = new String(ZipUtil.unGzip(Base64.getDecoder().decode(dataStr)), "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+            System.out.println("Sm解密数据为: " + StringUtils.abbreviate(dataStr, 1024 * 2));
             System.out.println("数据状态：" + responseEncryptedData.getDataStatus());
         } else {
-            System.err.println("Non 200 return code");
+            System.err.println("Non 200 return code " + response.getStatus());
             System.exit(1);
         }
     }
+
+
+    public static byte[] compressData(byte[] data) throws IOException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        try (GZIPOutputStream gzipOS = new GZIPOutputStream(bos)) {
+            gzipOS.write(data);
+        }
+        return bos.toByteArray();
+    }
+
+    public static byte[] decompressData(byte[] compressedData) throws IOException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        try (GZIPInputStream gzipIS = new GZIPInputStream(new ByteArrayInputStream(compressedData))) {
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = gzipIS.read(buffer)) != -1) {
+                bos.write(buffer, 0, len);
+            }
+        }
+        return bos.toByteArray();
+    }
+
 
 
     public static String getRbacToken(String url, String appid, String u, String p) throws Exception {
