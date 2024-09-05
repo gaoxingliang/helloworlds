@@ -1,17 +1,11 @@
 import cn.hutool.core.io.*;
-import cn.hutool.core.util.*;
-import cn.sichuancredit.apigateway.encryption.*;
-import com.alibaba.fastjson.*;
-import kong.unirest.HttpResponse;
-import kong.unirest.*;
+import cn.sichuancredit.apigateway.client.*;
 import org.apache.commons.lang3.*;
-import org.apache.http.*;
 import org.junit.jupiter.api.*;
 
 import java.io.*;
 import java.nio.charset.*;
 import java.util.*;
-import java.util.zip.*;
 
 /**
  * 数据服务测试用例
@@ -19,10 +13,7 @@ import java.util.zip.*;
 public class TestCases {
     private static String endpoint = "http://devicbc.sichuancredit.cn:88";
     private static String username, password, token, privKey, pubKey;
-
-    static {
-        Unirest.config().automaticRetries(false).socketTimeout(60 * 1000);
-    }
+    private static ApiClient client;
 
     @BeforeAll
     static void auth() throws Exception {
@@ -32,7 +23,8 @@ public class TestCases {
         password = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test\\sichuanzhengxin\\test-password.txt");
         privKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test\\sichuanzhengxin\\test-user-priv.txt");
         pubKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test\\sichuanzhengxin\\test-sczx-pub.txt");
-        if (false) {
+
+        if (true) {
             // 生产环境
             endpoint = "https://api.tianfucredit.cn";
             username = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\prod\\test-username.txt");
@@ -41,9 +33,42 @@ public class TestCases {
             pubKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\prod\\test-sczx-pub.txt");
         }
 
-        String rbacToken = getRbacToken(endpoint + "/auth/token", "data", username, password);
-        System.out.println(rbacToken);
-        token = rbacToken;
+        ApiConfig config = new ApiConfig();
+        config.setUsername(username);
+        config.setPassword(password);
+        config.setPrivateKey(privKey);
+        config.setPublicKey(pubKey);
+        config.setUrl(endpoint);
+
+        client = new ApiClient(config);
+    }
+
+    @Test
+    void testEquityUpper() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "乐视网信息技术(北京)股份有限公司");
+        getRequest("/v2/enterprises/ent-ba/modules/equitypenetration", params);
+    }
+
+    @Test
+    void testEquityThree() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "乐视网信息技术(北京)股份有限公司");
+        getRequest("/v2/enterprises/ent-ba/modules/equitypenetrationthree", params);
+    }
+
+    @Test
+    void testActualControls() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "乐视网信息技术(北京)股份有限公司");
+        getRequest("/v2/enterprises/ent-ba/modules/actualcontrols", params);
+    }
+
+    @Test
+    void testFindRelationTaskBlocking() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprises", Arrays.asList("四川征信有限公司", "四川金融控股集团有限公司"));
+        getRequest("/v2/enterprises/ent-ba/modules/findrelationtaskblocking", params);
     }
 
     @Test
@@ -59,6 +84,13 @@ public class TestCases {
         Map<String, Object> params = new HashMap<>();
         params.put("enterprise", "中化化肥有限公司");
         getRequest("/v2/enterprises/ent-ba/modules/unpubannualreports", params);
+    }
+
+    @Test
+    void testNewsList() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "中化化肥有限公司");
+        getRequest("/v2/enterprises/pub-opinions/modules/newslist", params);
     }
 
     @Test
@@ -273,10 +305,25 @@ public class TestCases {
     }
 
     @Test
+    void testJudicialChange() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "上海兆瓦投资咨询有限公司");
+        getRequest("/v2/enterprises/justices/modules/judicialchange", params);
+    }
+
+    @Test
     void testLogoutRecords() {
         Map<String, Object> params = new HashMap<>();
         params.put("enterprise", "太原市星雅石材有限公司");
         getRequest("/v2/enterprises/justices/modules/logoutrecords", params);
+    }
+
+
+    @Test
+    void testRecruits() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "太原市星雅石材有限公司");
+        getRequest("/v2/enterprises/customized/modules/recruits", params);
     }
 
     @Test
@@ -614,83 +661,8 @@ public class TestCases {
 
     // 辅助方法 ---------------------------------------------
     public static void getRequest(String path, Map<String, Object> params) {
-        // GET请求示例
-        System.out.println(new Date() + "Get 请求开始-----------" + endpoint + path + " params:" + params);
-        HttpResponse<String> response = Unirest.get(endpoint + path)
-                .header(HttpHeaders.AUTHORIZATION, token)
-                .queryString(params)
-                .asString();
-        System.out.println(new Date() + "收到回复" + StringUtils.abbreviate(response.getBody(), 1024) + " headers:" + response.getHeaders() + " status:" + response.getStatus());
-        if (response.getStatus() == 200) {
-            String zipVersion = response.getHeaders().getFirst("internal-zip-version");
-            // 解密
-            EncryptedData responseEncryptedData = JSONObject.parseObject(response.getBody(), EncryptedData.class);
-            String sm4Key2 = MySmUtil.sm2Decrypt(responseEncryptedData.getEncryptKey(), privKey);
-            // 国密Sm4解密返回的数据
-            String rawData = responseEncryptedData.getData();
-            String dataStr = MySmUtil.sm4Decrypt(rawData, sm4Key2);
-            if (zipVersion != null && zipVersion.length() > 0 && Integer.valueOf(zipVersion) == 1) {
-                try {
-                    dataStr = new String(ZipUtil.unGzip(Base64.getDecoder().decode(dataStr)), "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    throw new IllegalArgumentException(e);
-                }
-            }
-            System.out.println("Sm解密数据为: " + StringUtils.abbreviate(dataStr, 1024 * 2));
-            System.out.println("数据状态：" + responseEncryptedData.getDataStatus());
-        } else {
-            System.err.println("Non 200 return code " + response.getStatus());
-            System.exit(1);
-        }
-    }
-
-
-    public static byte[] compressData(byte[] data) throws IOException {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        try (GZIPOutputStream gzipOS = new GZIPOutputStream(bos)) {
-            gzipOS.write(data);
-        }
-        return bos.toByteArray();
-    }
-
-    public static byte[] decompressData(byte[] compressedData) throws IOException {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        try (GZIPInputStream gzipIS = new GZIPInputStream(new ByteArrayInputStream(compressedData))) {
-            byte[] buffer = new byte[1024];
-            int len;
-            while ((len = gzipIS.read(buffer)) != -1) {
-                bos.write(buffer, 0, len);
-            }
-        }
-        return bos.toByteArray();
-    }
-
-
-
-    public static String getRbacToken(String url, String appid, String u, String p) throws Exception {
-        System.out.println(url);
-        JSONObject d = new JSONObject();
-        d.put("appid", appid);
-        d.put("username", u);
-        d.put("password", p);
-
-        HttpResponse<String> response = Unirest.post(url)
-                .header("Content-Type", "application/json")
-                .body(d.toString())
-                .asString();
-        if (response.getStatus() != 200) {
-            throw new Exception("Invalid rbac response : " + response.getBody());
-        }
-
-        com.alibaba.fastjson2.JSONObject resp = com.alibaba.fastjson2.JSONObject.parse(response.getBody());
-
-        System.out.println(response.getBody());
-        String t = resp.getString("rbac_token");
-        if (t == null) {
-            throw new IllegalArgumentException("No token found in rbac response");
-        }
-
-        return t;
+        String resp = client.get(path, params, true);
+        System.out.println("响应：" + StringUtils.abbreviate(resp, 1024));
     }
 
     public static String readFile(String file) {
