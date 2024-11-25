@@ -24,7 +24,7 @@ public class TestCases {
         privKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test\\sichuanzhengxin\\test-user-priv.txt");
         pubKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test\\sichuanzhengxin\\test-sczx-pub.txt");
 
-        if (true) {
+        if (false) {
             // 生产环境
             endpoint = "https://api.tianfucredit.cn";
             username = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\prod\\test-username.txt");
@@ -58,6 +58,13 @@ public class TestCases {
     }
 
     @Test
+    void testDataStatus() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("taxpyrIdNo", "9156CU30AM60911D1E");
+        getRequest("/v2/enterprises/taxinfo/modules/data-statuses", params);
+    }
+
+    @Test
     void testActualControls() {
         Map<String, Object> params = new HashMap<>();
         params.put("enterprise", "乐视网信息技术(北京)股份有限公司");
@@ -82,7 +89,7 @@ public class TestCases {
     @Test
     void testUnpubAnualReports() {
         Map<String, Object> params = new HashMap<>();
-        params.put("enterprise", "中化化肥有限公司");
+        params.put("enterprise", "浙江数秦科技有限公司");
         getRequest("/v2/enterprises/ent-ba/modules/unpubannualreports", params);
     }
 
@@ -282,6 +289,14 @@ public class TestCases {
         params.put("enterprise", "福建宇桐机械有限公司");
         getRequest("/v2/enterprises/taxinfo/modules/taxcreditlevels", params);
     }
+
+    @Test
+    void testTaxCreditLevelsAll() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "福建宇桐机械有限公司");
+        getRequest("/v2/enterprises/taxinfo/modules/taxcreditlevelall", params);
+    }
+
 
     @Test
     void testCapitalType() {
