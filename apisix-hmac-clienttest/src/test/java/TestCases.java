@@ -618,6 +618,20 @@ public class TestCases {
     }
 
     @Test
+    void testReds() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("creditCode", "91511100X211137092");
+        getRequest("/v2/enterprises/customized/modules/reds", params);
+    }
+
+    @Test
+    void testBlacks() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("creditCode", "91510108MA61W82D4L");
+        getRequest("/v2/enterprises/customized/modules/blacks", params);
+    }
+
+    @Test
     void testDiscreditExecutions() {
         Map<String, Object> params = new HashMap<>();
         params.put("enterprise", "廊坊市翡翠华庭房地产开发有限公司");
