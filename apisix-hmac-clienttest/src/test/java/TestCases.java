@@ -24,7 +24,7 @@ public class TestCases {
         privKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test\\sichuanzhengxin\\test-user-priv.txt");
         pubKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test\\sichuanzhengxin\\test-sczx-pub.txt");
 
-        if (false) {
+        if (true) {
             // 生产环境
             endpoint = "https://api.tianfucredit.cn";
             username = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\prod\\test-username.txt");
@@ -32,6 +32,7 @@ public class TestCases {
             privKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\prod\\test-user-priv.txt");
             pubKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\prod\\test-sczx-pub.txt");
         }
+
 
         ApiConfig config = new ApiConfig();
         config.setUsername(username);
@@ -51,6 +52,18 @@ public class TestCases {
     }
 
     @Test
+    void testWhites() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("cityCode", "5106");
+        params.put("bankCode", "B1544H251010001");
+        params.put("productId", "B1544H251010001001");
+        params.put("creditCode", "91511100X211137092");
+        params.put("file", new File("D:\\code\\datastore\\scdsjzx\\src\\main\\resources\\co-banks.pdf"));
+        String resp = client.postForm("/v1/enterprises/customized/modules/whites", null, params);
+        System.out.println(resp);
+    }
+
+    @Test
     void testEquityThree() {
         Map<String, Object> params = new HashMap<>();
         params.put("enterprise", "乐视网信息技术(北京)股份有限公司");
@@ -60,7 +73,7 @@ public class TestCases {
     @Test
     void testDataStatus() {
         Map<String, Object> params = new HashMap<>();
-        params.put("taxpyrIdNo", "9156CU30AM60911D1E");
+        params.put("taxpyrIdNo", "91510100MA7G7KQU8J");
         getRequest("/v2/enterprises/taxinfo/modules/data-statuses", params);
     }
 
