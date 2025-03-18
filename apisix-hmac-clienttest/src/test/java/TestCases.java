@@ -24,7 +24,7 @@ public class TestCases {
         privKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test\\sichuanzhengxin\\test-user-priv.txt");
         pubKey = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\test\\sichuanzhengxin\\test-sczx-pub.txt");
 
-        if (true) {
+        if (false) {
             // 生产环境
             endpoint = "https://api.tianfucredit.cn";
             username = readFile("D:\\code\\helloworlds\\apisix-hmac-clienttest\\prod\\test-username.txt");
@@ -42,6 +42,13 @@ public class TestCases {
         config.setUrl(endpoint);
 
         client = new ApiClient(config);
+    }
+
+    @Test
+    void testGetUser() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("creditCode", "91511100X211137092");
+        getRequest("/enterprises/users", params);
     }
 
     @Test
