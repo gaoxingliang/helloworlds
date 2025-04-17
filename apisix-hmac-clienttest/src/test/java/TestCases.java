@@ -45,6 +45,13 @@ public class TestCases {
     }
 
     @Test
+    void queryStats() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("X-Provider-ID", "G_191910");
+        getRequest("/enterprises/customized/modules/statistics/1", new HashMap<>(), headers);
+    }
+
+    @Test
     void testGetUser() {
         Map<String, Object> params = new HashMap<>();
         params.put("creditCode", "91511100X211137092");
@@ -710,7 +717,11 @@ public class TestCases {
 
     // 辅助方法 ---------------------------------------------
     public static void getRequest(String path, Map<String, Object> params) {
-        String resp = client.get(path, params, true);
+        getRequest(path, params, new HashMap<>());
+    }
+
+    public static void getRequest(String path, Map<String, Object> params, Map<String, String> headers) {
+        String resp = client.get(path, params,  headers,true);
         System.out.println("响应：" + StringUtils.abbreviate(resp, 1024));
     }
 
