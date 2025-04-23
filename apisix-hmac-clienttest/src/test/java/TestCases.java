@@ -45,6 +45,13 @@ public class TestCases {
     }
 
     @Test
+    void queryEntDb() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("enterprise", "四川征信有限公司");
+        getRequest("/v2/enterprises/customized/modules/base-ent-db/entba", params);
+    }
+
+    @Test
     void queryStats() {
         Map<String, String> headers = new HashMap<>();
         headers.put("X-Provider-ID", "G_191910");
