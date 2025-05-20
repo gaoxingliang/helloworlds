@@ -78,8 +78,6 @@ public class TestCases {
         params.put("cityCode", "5106");
         params.put("bankCode", "B1544H251010001");
         params.put("productId", "B1544H251010001001");
-        params.put("creditCode", "91511100X211137092");
-        params.put("file", new File("D:\\code\\datastore\\scdsjzx\\src\\main\\resources\\co-banks.pdf"));
         String resp = client.postForm("/v1/enterprises/customized/modules/whites", null, params);
         System.out.println(resp);
     }
