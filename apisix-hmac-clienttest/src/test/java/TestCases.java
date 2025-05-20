@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class TestCases {
     private static String endpoint = "http://devicbc.sichuancredit.cn:88";
-    private static String username, password, token, privKey, pubKey;
+    private static String username, password, privKey, pubKey;
     private static ApiClient client;
 
     @BeforeAll
@@ -217,7 +217,7 @@ public class TestCases {
     @Test
     void testEntCases() {
         Map<String, Object> params = new HashMap<>();
-        params.put("enterprise", "泸州老窖股份有限公司");
+        params.put("enterprise", "四川征信有限公司");
         getRequest("/v2/enterprises/justices/modules/cases", params);
     }
 
