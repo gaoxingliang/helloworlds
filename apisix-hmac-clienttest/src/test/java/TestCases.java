@@ -76,8 +76,9 @@ public class TestCases {
     void testWhites() {
         Map<String, Object> params = new HashMap<>();
         params.put("cityCode", "5106");
-        params.put("bankCode", "B1544H251010001");
-        params.put("productId", "B1544H251010001001");
+        // read from env
+        params.put("bankCode", System.getenv("BANKCODE"));
+        params.put("productId", System.getenv("PRODUCTID"));
         String resp = client.postForm("/v1/enterprises/customized/modules/whites", null, params);
         System.out.println(resp);
     }
