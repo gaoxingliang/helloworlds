@@ -1,0 +1,26 @@
+micronaut:
+  application:
+    name: user-service-micronaut
+  server:
+    port: 8080
+  datasources:
+    default:
+      url: jdbc:mysql://localhost:33307/userdb?useSSL=false&serverTimezone=UTC
+      username: root
+      password: root
+      driverClassName: com.mysql.cj.jdbc.Driver
+  jpa:
+    default:
+      entity-scan-packages: com.example
+      properties:
+        hibernate:
+          hbm2ddl:
+            auto: update
+          dialect: org.hibernate.dialect.MySQL8Dialect
+          show_sql: true
+          format_sql: true
+
+logging:
+  level:
+    com.example: DEBUG
+    io.micronaut: DEBUG

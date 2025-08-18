@@ -1,0 +1,10 @@
+server:
+  port: 8080
+  host: 0.0.0.0
+
+db:
+  source: "jdbc"
+  connection:
+    url: "jdbc:mysql://localhost:33307/userdb?useSSL=false&serverTimezone=UTC"
+    username: "root"
+    password: "root"

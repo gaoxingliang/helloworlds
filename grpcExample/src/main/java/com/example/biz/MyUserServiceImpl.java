@@ -2,6 +2,7 @@ package com.example.biz;
 
 import com.example.grpc.common.vo.*;
 import com.example.grpc.user.*;
+import io.grpc.*;
 import io.grpc.stub.*;
 
 public class MyUserServiceImpl extends UserGrpc.UserImplBase {
@@ -15,6 +16,9 @@ public class MyUserServiceImpl extends UserGrpc.UserImplBase {
         } else {
             b.setResponseCode(1);
             b.setResponsemessage("FAIL");
+        }
+        if (request.getUsername().equals("error")) {
+            responseObserver.onError(Status.INVALID_ARGUMENT.withDescription("Invalid username").asException());
         }
         responseObserver.onNext(b.build());
         responseObserver.onCompleted();
